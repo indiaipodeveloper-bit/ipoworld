@@ -1,0 +1,10 @@
+# Prevent Apache from trying to content-negotiate paths like /login
+
+Options -MultiViews
+
+# Send all non-file / non-folder requests to index.html (React SPA)
+
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [QSA,L]

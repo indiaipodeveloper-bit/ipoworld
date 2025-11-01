@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>INDIA IPO - Investment Platform</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=AW-16865507345"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+
+    gtag("config", "AW-16865507345");
+  </script>
+  <body>
+    <header class="header">
+      <div class="header-container">
+        <a href="#" class="logo">
+          <div class="">
+            <img
+              class="imgloo"
+              src="https://www.indiaipo.in/assets/images/indiaipo_logo_r.png"
+              alt="INDIA IPO"
+            />
+          </div>
+        </a>
+
+        <div class="nav-buttons" id="navButtons">
+          <a href="#" class="btn-login" onclick="handleLogin()">LOGIN</a>
+          <a href="#reg" class="btn-register">REGISTER</a>
+        </div>
+      </div>
+    </header>
+
+    <div class="main-content">
+      <div class="container">
+        <div class="banner-container_dfg">
+          <div class="certificate-section_dfg">
+            <div class="ribbon_dfg">IPO World</div>
+            <img class="imagwe" src="/assets/mag5.webp" alt="IPO" />
+          </div>
+
+          <div class="content-section_dfg">
+            <h1 class="main-title_dfg">
+              IPO World – The One & Only Magazine Dedicated 100% to IPOs
+            </h1>
+
+            <p class="description_dfg">
+              Every year, India’s markets witness thousands of crores raised
+              through IPOs. Yet, investors, corporates, and financial advisors
+              struggle with one big challenge: authentic, well-structured,
+              IPO-focused information is scattered everywhere. IPO World
+              Magazine is a first-of-its-kind monthly publication exclusively
+              dedicated to IPOs. It brings together in-depth research, sector
+              reports, merchant banker insights, and upcoming IPO forecasts –
+              all in one trusted source. Magazine Snapshot Format: Print +
+              Digital Editions
+            </p>
+
+            <div class="mentors-section_dfg">
+              <div class="mentor-info_dfg">
+                <div class="mentor-avatar_dfg">
+                  <img class="imagwe" src="/assets/mag5.webp" alt="INDIA IPO" />
+                </div>
+                <div class="mentor-details_dfg">
+                  <h4>Available in Both & Digital in Print Edition</h4>
+                </div>
+              </div>
+            </div>
+
+            <div class="stats-section_dfg">
+              <div class="people-icon_dfg">👥</div>
+              <div class="people-count_dfg">1,00,000 + Readers</div>
+            </div>
+            <div class="subtn">
+              <a href="#reg" class="register-button_dfg">SUBSCRIBE NOW</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="disp_flx">
+          <div class="video-section">
+            <div class="video-container">
+              <div class="video-placeholder">
+                <!-- YouTube API will inject its own iframe here -->
+                <div id="yt-player" class="yt-embed"></div>
+
+                <!-- Overlay that hides suggestions when paused/ended -->
+                <button
+                  id="yt-overlay"
+                  aria-label="Resume video"
+                  hidden
+                ></button>
+              </div>
+            </div>
+            <div class="course-info-grid">
+              <div class="info-card">
+                <div class="info-icon">
+                  <img class="imagw" src="assets/annual.png" alt="INDIA IPO" />
+                </div>
+                <div class="info-label">Magazine</div>
+                <div class="info-value">Monthly</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <img
+                    class="imagw"
+                    src="assets/language.png"
+                    alt="INDIA IPO"
+                  />
+                </div>
+                <div class="info-label">Language</div>
+                <div class="info-value">English</div>
+              </div>
+
+              <div class="info-card">
+                <div class="info-icon">
+                  <img class="imagw" src="assets/rate.png" alt="INDIA IPO" />
+                </div>
+
+                <div class="info-value">Exclusive Subscriber Recognition</div>
+              </div>
+            </div>
+
+            <div class="course-page-wrapper">
+              <div class="hero-section">
+                <h1>Trusted by 1,00,000+ readers across India</h1>
+                <p>
+                  From Kashmir to Kanyakumari, Gujarat to Guwahati – IPO World
+                  Magazine has built a loyal community of 10,000+ readers across
+                  India. Businessmen, Investors, and advisors rely on us for
+                  authentic IPO insights, company profiles and sector reports
+                  that drive smarter decisions.
+                </p>
+                <a href="#reg" class="cta-button">SUBSCRIBE NOW</a>
+              </div>
+
+              <div class="learning-modules-container">
+                <div class="learning-modules-title-section">
+                  <h2>Why Should You Subscribe</h2>
+                </div>
+
+                <div class="course-module-item" onclick="toggleModule(this)">
+                  <div class="course-module-clickable-area">
+                    <div class="module-details-wrapper">
+                      <div class="module-number-badge"></div>
+                      <div class="module-title-text">Why To Subscribe?</div>
+                    </div>
+                    <div class="dropdown-arrow-icon">⌄</div>
+                  </div>
+                  <div class="module-expandable-content">
+                    <div class="module-detailed-description">
+                      <p>
+                        Unlimited access to
+                        <b> IPO insights & expert analysis</b>
+                      </p>
+                      <p>
+                        Exclusive
+                        <b>research, founder stories & market trends</b>
+                      </p>
+                      <p>
+                        Print copy delivered to your doorstep (for Digital +
+                        Print plan)
+                      </p>
+                      <p>Save up to 35% on multi-year plans</p>
+                      <p>Cancel anytime – simple & hassle-free</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="course-module-item" onclick="toggleModule(this)">
+                  <div class="course-module-clickable-area">
+                    <div class="module-details-wrapper">
+                      <div class="module-number-badge"></div>
+                      <div class="module-title-text">Trusted by Readers</div>
+                    </div>
+                    <div class="dropdown-arrow-icon">⌄</div>
+                  </div>
+                  <div class="module-expandable-content">
+                    <div class="module-detailed-description">
+                      <p>
+                        Trusted by
+                        <b>10,000+ founders, businessmen & professionals</b>
+                      </p>
+                      <p>⭐⭐⭐⭐⭐ Rated <b>4.8/5 by subscribers</b></p>
+                      <p>100% <b>Secure Payment & Data Privacy</b></p>
+                      <p>
+                        Instant access to your <b>digital library</b> after
+                        payment
+                      </p>
+                      <p>
+                        Print copy shipped within <b>7 days</b> (for Print plan)
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="benefits-section">
+              <div class="benefit-item">
+                <div class="checkmark"></div>
+                <div class="benefit-text">
+                  Businessman & Entrepreneur – Know the roadmap to get your
+                  company listed.
+                </div>
+              </div>
+
+              <div class="benefit-item">
+                <div class="checkmark"></div>
+                <div class="benefit-text">
+                  Investors & Traders – Get insights into upcoming IPOs and
+                  market opportunities.
+                </div>
+              </div>
+
+              <div class="benefit-item">
+                <div class="checkmark"></div>
+                <div class="benefit-text">
+                  Finance Professionals – Stay updated with regulations,
+                  analysis and trends.
+                </div>
+              </div>
+
+              <div class="benefit-item">
+                <div class="checkmark"></div>
+                <div class="benefit-text">
+                  Students & Learners – Build strong IPO knowledge for your
+                  career.
+                </div>
+              </div>
+            </div>
+
+            <div class="registration-section">
+              <h2>Register Now</h2>
+
+              <form id="registrationForm">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-input"
+                    placeholder="Name *"
+                    required
+                    autocomplete="name"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <input
+                    type="email"
+                    class="form-input"
+                    placeholder="Email *"
+                    required
+                    autocomplete="email"
+                  />
+                </div>
+
+                <div class="form-group">
+                  <input
+                    type="Number"
+                    class="form-input"
+                    placeholder="Number *"
+                    required
+                    autocomplete="number"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="password"
+                    class="form-input"
+                    placeholder="Password *"
+                    required
+                  />
+                </div>
+                <button type="submit" class="submit-btn" id="submitBtn">
+                  Register Now
+                </button>
+                <span id="reg"></span>
+              </form>
+            </div>
+          </div>
+
+          <div class="stackytestmonil">
+            <div class="testimonials">
+              <div class="testimonials-header">Trusted readers</div>
+
+              <div class="testimonial-card" id="testimonial-card">
+                <div class="testimonial-text" id="testimonial-text">
+                  "INDIA IPO platform helped me achieve 23% returns on my first
+                  IPO investment. Excellent research and user-friendly
+                  interface!"
+                </div>
+                <div class="investor-info">
+                  <div class="investor-avatar" id="investor-avatar">R</div>
+                  <div class="investor-details">
+                    <h5 id="investor-name"></h5>
+                    <p id="investor-position"></p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const testimonials = [
+        {
+          text: "IPO World simplified complex IPO concepts for me. The expert articles and case studies gave me real confidence in investing.",
+          name: "Rohit Sharma",
+          position: "Retail Investor",
+          avatar: "R",
+        },
+        {
+          text: "As a startup founder, IPO World became my go-to guide. It gave me clarity on the process, challenges and opportunities of going public.",
+          name: " Nisha Verma",
+          position: "Startup Founder",
+          avatar: "N",
+        },
+        {
+          text: "The magazine covers everything — from regulations to market trends. I especially liked the founder's success stories, very inspiring!",
+          name: " Amit Malhotra",
+          position: "Finance Professional",
+          avatar: "A",
+        },
+        {
+          text: "I always found IPOs confusing, but IPO World made it simple and practical. Now I feel confident in understanding new listings.",
+          name: " Pooja Saini",
+          position: "  Business Student",
+          avatar: "P",
+        },
+        {
+          text: "The research section is gold. Data, insights and analysis are presented in such an easy-to-read way.",
+          name: " Karan Mehta",
+          position: "Stock Market Enthusiast",
+          avatar: "K",
+        },
+      ];
+
+      let currentTestimonial = 0;
+
+      function showTestimonial(index) {
+        const testimonial = testimonials[index];
+        document.getElementById(
+          "testimonial-text"
+        ).textContent = `"${testimonial.text}"`;
+        document.getElementById("investor-name").textContent = testimonial.name;
+        document.getElementById("investor-position").textContent =
+          testimonial.position;
+        document.getElementById("investor-avatar").textContent =
+          testimonial.avatar;
+      }
+
+      function handleLogin() {
+        window.location.href = "/login";
+      }
+
+      function handleRegister() {
+        window.location.href = "/#reg";
+      }
+
+      // Auto-rotate testimonials
+      setInterval(() => {
+        currentTestimonial = (currentTestimonial + 1) % testimonials.length;
+        showTestimonial(currentTestimonial);
+      }, 4000);
+
+      // Add scroll animations
+      document.addEventListener("DOMContentLoaded", function () {
+        const observerOptions = {
+          threshold: 0.1,
+          rootMargin: "0px 0px -50px 0px",
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.style.animationDelay = "0.2s";
+              entry.target.classList.add("slide-up");
+            }
+          });
+        }, observerOptions);
+
+        document.querySelectorAll(".info-cards").forEach((el) => {
+          observer.observe(el);
+        });
+
+        // Auto-rotate reviews every 5 seconds
+
+        // Bar chart animation
+        setTimeout(() => {
+          document.querySelectorAll(".bar").forEach((bar, index) => {
+            setTimeout(() => {
+              bar.style.transform = "scaleY(1)";
+              bar.style.transformOrigin = "bottom";
+            }, index * 200);
+          });
+        }, 1000);
+      });
+
+      // Close mobile menu when clicking outside
+      document.addEventListener("click", function (e) {
+        const navButtons = document.getElementById("navButtons");
+        const menuToggle = document.querySelector(".mobile-menu-toggle");
+
+        if (!navButtons.contains(e.target) && !menuToggle.contains(e.target)) {
+          navButtons.classList.remove("show");
+        }
+      });
+
+      function toggleModule(moduleElement) {
+        // Close all other modules
+        const allModules = document.querySelectorAll(".course-module-item");
+        allModules.forEach((module) => {
+          if (
+            module !== moduleElement &&
+            module.classList.contains("module-expanded")
+          ) {
+            module.classList.remove("module-expanded");
+          }
+        });
+
+        // Toggle current module
+        moduleElement.classList.toggle("module-expanded");
+      }
+
+      // Add smooth entrance animation
+      window.addEventListener("load", () => {
+        document.body.style.opacity = "1";
+      });
+
+      // Handle keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          const focused = document.activeElement;
+          if (
+            focused.classList.contains("course-module-clickable-area") ||
+            focused.closest(".course-module-item")
+          ) {
+            e.preventDefault();
+            const module = focused.closest(".course-module-item") || focused;
+            toggleModule(module);
+          }
+        }
+      });
+
+      // Make modules focusable for accessibility
+      document.querySelectorAll(".course-module-item").forEach((module) => {
+        module.setAttribute("tabindex", "0");
+        module.setAttribute("role", "button");
+        module.setAttribute("aria-expanded", "false");
+
+        module.addEventListener("click", () => {
+          const isExpanded = module.classList.contains("module-expanded");
+          module.setAttribute("aria-expanded", !isExpanded);
+        });
+      });
+    </script>
+    <script>
+      (function () {
+        // Config
+        const VIDEO_ID = "BFvQD1wZPOQ";
+        const START_SECONDS = 3;
+
+        // Load YouTube IFrame API
+        const tag = document.createElement("script");
+        tag.src = "https://www.youtube.com/iframe_api";
+        document.head.appendChild(tag);
+
+        let player;
+        const overlay = document.getElementById("yt-overlay");
+
+        // Called by YT API when it’s ready
+        window.onYouTubeIframeAPIReady = function () {
+          player = new YT.Player("yt-player", {
+            videoId: VIDEO_ID,
+            playerVars: {
+              start: START_SECONDS,
+              rel: 0, // only related videos from same channel at end
+              modestbranding: 1, // less branding
+              iv_load_policy: 3, // hide annotations
+              playsinline: 1,
+              origin: location.origin,
+            },
+            events: {
+              onStateChange: onStateChange,
+            },
+          });
+        };
+
+        function onStateChange(e) {
+          if (
+            e.data === YT.PlayerState.PAUSED ||
+            e.data === YT.PlayerState.ENDED
+          ) {
+            overlay.classList.add("show");
+            overlay.removeAttribute("hidden");
+          } else if (
+            e.data === YT.PlayerState.PLAYING ||
+            e.data === YT.PlayerState.BUFFERING
+          ) {
+            overlay.classList.remove("show");
+          }
+        }
+
+        // Clicking overlay resumes playback and hides the suggestions
+        overlay.addEventListener("click", function () {
+          overlay.classList.remove("show");
+          if (player && player.playVideo) player.playVideo();
+        });
+      })();
+    </script>
+  </body>
+</html>
