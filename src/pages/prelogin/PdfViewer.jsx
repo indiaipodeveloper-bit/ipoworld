@@ -23,7 +23,7 @@ const RENDER_SCALE = 1.5;
 
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
-  const [pageNum, setPageNum] = useState(1);
+  const [pageNum, setPageNum] = useState(0);
   const [scale, setScale] = useState(1);
   const [renderedPages, setRenderedPages] = useState(new Map());
   const [isLoading, setIsLoading] = useState(true);
@@ -208,7 +208,7 @@ export default function PdfViewer({ url }) {
           </span>
         </div>
 
-        <div className="md:flex hidden items-center gap-2">
+        <div className="flex items-center gap-2">
           <button
             onClick={zoomOut}
             className="px-2 py-1 cursor-pointer z-50 bg-[linear-gradient(135deg,#2e62ae,#4a7cc7)] text-white rounded-sm hover:bg-gray-300"
@@ -261,7 +261,7 @@ export default function PdfViewer({ url }) {
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum === 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
+                pageNum < 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
               } mb-20 mx-auto overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
