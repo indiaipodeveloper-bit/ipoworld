@@ -26,7 +26,6 @@ export default function Library() {
     { label: "This Month", value: "1" },
     { label: "Reading Time", value: "2.5h" },
   ];
-  console.log("render")
 
   const magazines = [
     {

@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist";
+import pdfjsWorker from "pdfjs-dist/build/pdf.worker.mjs?worker";
 import FlipBookWrapper from "./Flipper";
 import Lottie from "react-lottie";
 import animationData from "../../assets/animation.json";
@@ -9,9 +10,10 @@ const animationDefaultOptions = {
   autoplay: true,
   animationData,
 };
-
-pdfjsLib.GlobalWorkerOptions.workerSrc =
-  "../../node_modules/pdfjs-dist/build/pdf.worker.mjs";
+pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+  "pdfjs-dist/build/pdf.worker.mjs",
+  import.meta.url
+).toString();
 
 // Configuration
 const CACHE_SIZE = 20;
@@ -109,25 +111,22 @@ export default function PdfViewer({ url }) {
     [pdf]
   );
 
-  const preRenderInitialPages = useCallback(
-    async () => {
-      if (!pdf) return;
-      const pagesToRender = Math.min(10, totalPages);
-      const newPages = new Map();
+  const preRenderInitialPages = useCallback(async () => {
+    if (!pdf) return;
+    const pagesToRender = Math.min(10, totalPages);
+    const newPages = new Map();
 
-      for (let i = 1; i <= pagesToRender; i++) {
-        const imageData = await renderPage(i);
-        if (imageData) {
-          newPages.set(i, imageData);
-        }
+    for (let i = 1; i <= pagesToRender; i++) {
+      const imageData = await renderPage(i);
+      if (imageData) {
+        newPages.set(i, imageData);
       }
+    }
 
-      setRenderedPages(newPages);
-      setIsLoading(false);
-      isInitialLoad.current = false;
-    },
-    [pdf, totalPages, renderPage]
-  );
+    setRenderedPages(newPages);
+    setIsLoading(false);
+    isInitialLoad.current = false;
+  }, [pdf, totalPages, renderPage]);
 
   // Preload pages around current page
   const preloadPages = useCallback(
