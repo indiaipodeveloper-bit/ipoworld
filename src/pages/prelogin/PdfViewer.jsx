@@ -23,7 +23,7 @@ const RENDER_SCALE = 1.5;
 
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
-  const [pageNum, setPageNum] = useState(0);
+  const [pageNum, setPageNum] = useState(1);
   const [scale, setScale] = useState(1);
   const [renderedPages, setRenderedPages] = useState(new Map());
   const [isLoading, setIsLoading] = useState(true);
@@ -264,7 +264,7 @@ export default function PdfViewer({ url }) {
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum < 2 && "md:-translate-x-1/4"
+                pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-1/4"
               } mb-20 mx-auto overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
