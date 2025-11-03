@@ -198,7 +198,7 @@ export default function PdfViewer({ url }) {
 
   return (
     <div className="py-4">
-      <div className="flex flex-wrap justify-between items-center mb-4 gap-2">
+      <div className="flex justify-between items-center mb-4 gap-2">
         <div className="flex items-center gap-2">
           <span className="text-gray-700 dark:text-gray-600">
             Pages {pageNum} / {totalPages || "…"}
