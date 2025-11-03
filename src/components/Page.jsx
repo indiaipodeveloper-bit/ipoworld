@@ -9,7 +9,7 @@ export default function Page({ title, children }) {
   const nav = useNavigate();
   const hasUser = !!localStorage.getItem("token");
   // const hasUser = true;
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [open, setOpen] = useState(false);
   const btnRef = useRef(null);
   const panelRef = useRef(null);
@@ -55,20 +55,20 @@ export default function Page({ title, children }) {
         <>
           <button
             onClick={() => setSidebarOpen(true)}
-            className="xl:hidden cursor-pointer fixed top-5 left-2.5 z-50 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
+            className="cursor-pointer fixed top-5 left-2.5 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
           >
             <HiMenu className="w-5 h-5 text-white" />
           </button>
 
           <div
             className={`fixed xl:relative h-screen bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
-              sidebarOpen ? "left-0 w-72" : "-left-72 w-0 xl:left-0 xl:w-72"
+              sidebarOpen ? "left-0 w-72" : "-left-72 w-0 "
             }`}
           >
             <div className="px-6 py-6 border-b border-gray-200">
               <button
                 onClick={() => setSidebarOpen(false)}
-                className="absolute xl:hidden p-1  text-8xl cursor-pointer top-2 right-2 bg-blue-500 text-gray-50 rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                className="absolute p-1  text-8xl cursor-pointer top-2 right-2 bg-blue-500 text-gray-50 rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
               >
                 <HiX className="h-5 w-5" />
               </button>
