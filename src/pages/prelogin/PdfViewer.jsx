@@ -37,6 +37,7 @@ export default function PdfViewer({ url }) {
 
   // Load PDF document
   useEffect(() => {
+    console.log(pageNum)
     const loadPdf = async () => {
       try {
         setIsLoading(true);
@@ -211,7 +212,7 @@ export default function PdfViewer({ url }) {
         <div className="flex items-center gap-2">
           <button
             onClick={zoomOut}
-            className="px-2 py-1 cursor-pointer z-50 bg-[linear-gradient(135deg,#2e62ae,#4a7cc7)] text-white rounded-sm hover:bg-gray-300"
+            className="px-2 py-1 flex justify-center items-center cursor-pointer z-50 bg-[#3661fd] text-white rounded-sm `"
           >
             −
           </button>
@@ -220,7 +221,7 @@ export default function PdfViewer({ url }) {
           </span>
           <button
             onClick={zoomIn}
-            className="px-2 py-1 z-50 cursor-pointer bg-[linear-gradient(135deg,#2e62ae,#4a7cc7)] text-white rounded-sm hover:bg-gray-300"
+            className="px-2 py-1 z-50 flex justify-center items-center cursor-pointer bg-[#3661fd] text-white rounded-sm "
           >
             +
           </button>

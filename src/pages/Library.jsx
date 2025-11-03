@@ -59,7 +59,6 @@ export default function Library() {
     API.get("/pdfs")
       .then(({ data }) => {
         setItems(data);
-        console.log(data);
       })
       .catch((e) => {
         const msg = e?.response?.data?.error || "Failed to load library";
@@ -123,8 +122,8 @@ export default function Library() {
               onClick={() => setActiveFilter(filter.toLowerCase())}
               className={`px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition-all ${
                 activeFilter === filter.toLowerCase()
-                  ? "bg-blue-50 text-blue-500 border-2 border-blue-500"
-                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-500 hover:bg-blue-50 hover:text-blue-500"
+                  ? "bg-blue-50 text-[#3661fd] border-2 border-[#3661fd]"
+                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-[#3661fd] hover:bg-blue-50 hover:text-[#3661fd]"
               }`}
             >
               {filter}
@@ -137,7 +136,7 @@ export default function Library() {
           {stats.map((stat, index) => (
             <div key={index} className="bg-white rounded-xl p-5 shadow-sm">
               <h4 className="text-sm text-gray-600 mb-2">{stat.label}</h4>
-              <div className="text-3xl font-bold text-blue-500">
+              <div className="text-3xl font-bold text-[#3661fd]">
                 {stat.value}
               </div>
             </div>
@@ -165,7 +164,7 @@ export default function Library() {
                   className={`h-48 bg-gradient-to-br ${magazine.gradient} flex items-center justify-center text-white text-2xl font-bold relative`}
                 >
                   <span>VOL. {magazine.id + 2}</span>
-                  <span className="absolute top-4 right-4 bg-white text-blue-500 text-xs font-semibold px-3 py-1 rounded-full uppercase">
+                  <span className="absolute top-4 right-4 bg-white text-[#3661fd] text-xs font-semibold px-3 py-1 rounded-full uppercase">
                     PDF
                   </span>
                 </div>
@@ -182,7 +181,7 @@ export default function Library() {
                       openPdf(magazine._id);
                       setisReader(true);
                     }}
-                    className="w-full py-2.5 cursor-pointer bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 transition-all"
+                    className="w-full py-2.5 cursor-pointer bg-[#3661fd] text-white rounded-lg font-medium hover:bg-blue-600 transition-all"
                   >
                     View inline
                   </button>

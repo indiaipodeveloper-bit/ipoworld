@@ -94,7 +94,7 @@ export default function Page({ title, children }) {
                     }}
                     className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
                       activeNav === item.id
-                        ? "bg-blue-50 text-blue-500 border-blue-500 font-medium"
+                        ? "bg-blue-50 text-[#3661fd] border-[#3661fd] font-medium"
                         : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-blue-500"
                     }`}
                   >
@@ -114,7 +114,7 @@ export default function Page({ title, children }) {
               </div>
               <button
                 onClick={logout}
-                className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-3 bg-blue-500 text-white rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
+                className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-3 bg-[#3661fd] text-white rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
               >
                 <IoLogOutOutline className="w-4 h-4" />
                 Logout
