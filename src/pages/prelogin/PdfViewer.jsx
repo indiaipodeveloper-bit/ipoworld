@@ -37,8 +37,8 @@ export default function PdfViewer({ url }) {
 
   // Load PDF document
   useEffect(() => {
-    if(!!pageNum){
-      console.log("true")
+    if (!!pageNum) {
+      console.log("true");
     }
     const loadPdf = async () => {
       try {
@@ -264,7 +264,7 @@ export default function PdfViewer({ url }) {
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
+                pageNum === 2 ? "md:translate-x-0" : "md:-translate-x-1/4"
               } mb-20 mx-auto overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
