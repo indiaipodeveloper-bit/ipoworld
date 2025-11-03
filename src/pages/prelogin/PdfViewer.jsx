@@ -23,7 +23,7 @@ const RENDER_SCALE = 1.5;
 
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
-  const [pageNum, setPageNum] = useState(0);
+  const [pageNum, setPageNum] = useState(1); // ✅ Start from page 1
   const [scale, setScale] = useState(1);
   const [renderedPages, setRenderedPages] = useState(new Map());
   const [isLoading, setIsLoading] = useState(true);
@@ -37,9 +37,6 @@ export default function PdfViewer({ url }) {
 
   // Load PDF document
   useEffect(() => {
-    if(!!pageNum){
-      console.log("true")
-    }
     const loadPdf = async () => {
       try {
         setIsLoading(true);
@@ -60,7 +57,7 @@ export default function PdfViewer({ url }) {
       }
     };
     loadPdf();
-  }, []);
+  }, [url]);
 
   useEffect(() => {
     if (scaleref.current) {
@@ -83,15 +80,7 @@ export default function PdfViewer({ url }) {
         const page = await pdf.getPage(pageNumber);
         const viewport = page.getViewport({ scale: RENDER_SCALE });
         const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d", {
-          alpha: false,
-          willReadFrequently: false,
-        });
-
-        if (!ctx) {
-          renderingQueue.current.delete(pageNumber);
-          return null;
-        }
+        const ctx = canvas.getContext("2d");
 
         canvas.width = viewport.width;
         canvas.height = viewport.height;
@@ -129,10 +118,9 @@ export default function PdfViewer({ url }) {
 
     setRenderedPages(newPages);
     setIsLoading(false);
-    isInitialLoad.current = false;
+    isInitialLoad.current = false; // ✅ Mark first render done
   }, [pdf, totalPages, renderPage]);
 
-  // Preload pages around current page
   const preloadPages = useCallback(
     async (centerPage) => {
       if (!pdf) return;
@@ -158,7 +146,6 @@ export default function PdfViewer({ url }) {
     [pdf, totalPages, renderedPages, renderPage]
   );
 
-  // Clean up old pages from memory
   const cleanupCache = useCallback(
     (centerPage) => {
       if (renderedPages.size <= CACHE_SIZE) return;
@@ -178,7 +165,6 @@ export default function PdfViewer({ url }) {
     [totalPages, renderedPages.size]
   );
 
-  // Handle page change
   const handlePageChange = useCallback(
     (page) => {
       setPageNum(page);
@@ -214,7 +200,7 @@ export default function PdfViewer({ url }) {
         <div className="flex items-center gap-2">
           <button
             onClick={zoomOut}
-            className="px-2 py-1 flex justify-center items-center cursor-pointer z-50 bg-[#3661fd] text-white rounded-sm `"
+            className="px-2 py-1 flex justify-center items-center cursor-pointer z-50 bg-[#3661fd] text-white rounded-sm"
           >
             −
           </button>
@@ -223,7 +209,7 @@ export default function PdfViewer({ url }) {
           </span>
           <button
             onClick={zoomIn}
-            className="px-2 py-1 z-50 flex justify-center items-center cursor-pointer bg-[#3661fd] text-white rounded-sm "
+            className="px-2 py-1 z-50 flex justify-center items-center cursor-pointer bg-[#3661fd] text-white rounded-sm"
           >
             +
           </button>
@@ -242,7 +228,6 @@ export default function PdfViewer({ url }) {
           <div className="flex justify-center text-center items-center py-8">
             <span className="text-gray-600">
               <Lottie
-                className=""
                 isClickToPauseDisabled={true}
                 height={300}
                 width={300}
@@ -252,52 +237,63 @@ export default function PdfViewer({ url }) {
           </div>
         ) : (
           <>
+            {/* ✅ Intro fade hint */}
             <div
               className={`transition-opacity duration-700 ease-in-out ${
                 pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
-              } text-white bg-black/70 transition-all duration-300 text-lg lg:text-xl text-center top-1/4 w-1/3 z-50 my-5 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
+              } text-white bg-black/70 transition-all text-lg lg:text-xl text-center top-1/4 w-1/3 z-50 my-5 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
             >
               <FaLongArrowAltLeft />
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
-            <FlipBookWrapper
-              singlePage={true}
-              className={`w-full ${
-                pageNum < 2 ? "md:-translate-x-1/4" : "md:translate-x-0"
-              } mb-20 mx-auto overflow-hidden transition-all duration-500`}
-              currentPage={pageNum}
-              onPageChange={handlePageChange}
+
+            {/* ✅ No shifting on first load */}
+            <div
+              className={`opacity-0 transition-opacity duration-700 ${
+                !isLoading ? "opacity-100" : ""
+              }`}
             >
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => {
-                  const imageData = pageRefs.current.get(pageNumber);
-                  return (
-                    <div
-                      key={pageNumber}
-                      className="w-full h-full m-auto flex overflow-hidden bg-white"
-                      style={{
-                        width: pageDimensions?.width || "auto",
-                        height: pageDimensions?.height || "auto",
-                      }}
-                    >
-                      {imageData ? (
-                        <div
-                          style={{ backgroundImage: `url(${imageData})` }}
-                          className="h-full w-full mx-auto bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
-                        ></div>
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                          <span className="text-gray-500">
-                            Loading page {pageNumber}...
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </FlipBookWrapper>
+              <FlipBookWrapper
+                singlePage={true}
+                className={`w-full ${
+                  !isInitialLoad.current && pageNum < 2
+                    ? "md:-translate-x-1/4"
+                    : "md:translate-x-0"
+                } mb-20 mx-auto overflow-hidden transition-all duration-500`}
+                currentPage={pageNum}
+                onPageChange={handlePageChange}
+              >
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (pageNumber) => {
+                    const imageData = pageRefs.current.get(pageNumber);
+                    return (
+                      <div
+                        key={pageNumber}
+                        className="w-full h-full m-auto flex overflow-hidden bg-white"
+                        style={{
+                          width: pageDimensions?.width || "auto",
+                          height: pageDimensions?.height || "auto",
+                        }}
+                      >
+                        {imageData ? (
+                          <div
+                            style={{ backgroundImage: `url(${imageData})` }}
+                            className="h-full w-full mx-auto bg-no-repeat bg-center overflow-auto bg-contain"
+                          ></div>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                            <span className="text-gray-500">
+                              Loading page {pageNumber}...
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                )}
+              </FlipBookWrapper>
+            </div>
           </>
         )}
       </div>
