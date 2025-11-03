@@ -104,7 +104,7 @@ export default function Page({ title, children }) {
                 );
               })}
             </nav>
-
+    
             <div className="p-6 border-t border-gray-200">
               <div className="bg-green-50 rounded-lg p-4 mb-4">
                 <h4 className="text-xs uppercase tracking-wide text-blue-900 mb-1">
