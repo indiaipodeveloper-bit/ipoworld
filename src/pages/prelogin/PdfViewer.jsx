@@ -4,6 +4,7 @@ import pdfjsWorker from "pdfjs-dist/build/pdf.worker.mjs?worker";
 import FlipBookWrapper from "./Flipper";
 import Lottie from "react-lottie";
 import animationData from "../../assets/animation.json";
+import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
 
 const animationDefaultOptions = {
   loop: true,
@@ -247,42 +248,54 @@ export default function PdfViewer({ url }) {
             </span>
           </div>
         ) : (
-          <FlipBookWrapper
-            className={`w-full ${
-              pageNum === 1 ? "xl:-translate-x-1/4" : "xl:translate-x-0"
-            } mb-20 mx-auto overflow-hidden transition-all duration-500`}
-            currentPage={pageNum}
-            onPageChange={handlePageChange}
-          >
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-              (pageNumber) => {
-                const imageData = pageRefs.current.get(pageNumber);
-                return (
-                  <div
-                    key={pageNumber}
-                    className="w-full h-full m-auto flex overflow-hidden bg-white"
-                    style={{
-                      width: pageDimensions?.width || "auto",
-                      height: pageDimensions?.height || "auto",
-                    }}
-                  >
-                    {imageData ? (
-                      <div
-                        style={{ backgroundImage: `url(${imageData})` }}
-                        className="h-full w-full mx-auto bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
-                      ></div>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                        <span className="text-gray-500">
-                          Loading page {pageNumber}...
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                );
-              }
-            )}
-          </FlipBookWrapper>
+          <>
+            <div
+              className={`transition-opacity duration-700 ease-in-out ${
+                pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
+              } text-white bg-black/70 text-lg lg:text-xl text-center top-1/4 w-1/3 z-50 my-5 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
+            >
+              <FaLongArrowAltLeft />
+              <p>Click or Swipe to Read</p>
+              <FaLongArrowAltRight />
+            </div>
+            <FlipBookWrapper
+              singlePage={true}
+              className={`w-full ${
+                pageNum === 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
+              } mb-20 mx-auto overflow-hidden transition-all duration-500`}
+              currentPage={pageNum}
+              onPageChange={handlePageChange}
+            >
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                (pageNumber) => {
+                  const imageData = pageRefs.current.get(pageNumber);
+                  return (
+                    <div
+                      key={pageNumber}
+                      className="w-full h-full m-auto flex overflow-hidden bg-white"
+                      style={{
+                        width: pageDimensions?.width || "auto",
+                        height: pageDimensions?.height || "auto",
+                      }}
+                    >
+                      {imageData ? (
+                        <div
+                          style={{ backgroundImage: `url(${imageData})` }}
+                          className="h-full w-full mx-auto bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
+                        ></div>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                          <span className="text-gray-500">
+                            Loading page {pageNumber}...
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                }
+              )}
+            </FlipBookWrapper>
+          </>
         )}
       </div>
     </div>

@@ -16,3 +16,8 @@
   .container { @apply max-w-6xl mx-auto px-4; }
   .nav { @apply sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-slate-200; }
 }
+
+
+.drop{
+  text-shadow: 0 0 30px black;
+}

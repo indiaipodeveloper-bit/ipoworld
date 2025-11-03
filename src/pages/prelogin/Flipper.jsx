@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import HTMLFlipBook from "react-pageflip";
 
 const FlipBookWrapper = ({
@@ -11,6 +11,7 @@ const FlipBookWrapper = ({
   className = "",
   ...rest
 }) => {
+  const [isBookView, setIsBookView] = useState(false);
   const handleFlip = (e) => {
     if (onPageChange) {
       onPageChange(e.data + 1);
@@ -20,21 +21,29 @@ const FlipBookWrapper = ({
   return (
     <HTMLFlipBook
       size="stretch"
+      width={400}
       height={600}
-      width={600}
-      minWidth={400}
-      maxWidth={1200}
+      minWidth={315}
+      maxWidth={1000}
+      maxHeight={1000}
       minHeight={400}
-      maxHeight={1200}
+      showCover={true}
+      usePortrait={true}
+      onChangeOrientation={(e) => {
+        const orientation = e.data;
+        setIsBookView(orientation === "landscape");
+        console.log(
+          "Current view:",
+          orientation === "landscape" ? "Book" : "Single"
+        );
+      }}
       style={{}}
       startPage={0}
       drawShadow={true}
       flippingTime={1000}
-      usePortrait={true}
       startZIndex={0}
       autoSize={true}
       maxShadowOpacity={0.5}
-      showCover={true}
       mobileScrollSupport={true}
       clickEventForward={true}
       useMouseEvents={true}
@@ -43,7 +52,6 @@ const FlipBookWrapper = ({
       disableFlipByClick={false}
       className={className}
       onFlip={handleFlip}
-      onChangeOrientation={onChangeOrientation}
       onChangeState={onChangeState}
       {...rest}
     >
