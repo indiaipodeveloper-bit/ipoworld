@@ -207,9 +207,6 @@ export default function PdfViewer({ url }) {
           <span className="text-gray-700 dark:text-gray-600">
             Pages {pageNum} / {totalPages || "…"}
           </span>
-          <span className="text-xs text-gray-500">
-            ({renderedPages.size} cached)
-          </span>
         </div>
 
         <div className="flex items-center gap-2">
