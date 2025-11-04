@@ -264,7 +264,7 @@ export default function PdfViewer({ url }) {
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum <= 1 && "md:-translate-x-full bg-red-500" 
+                pageNum <= 1 && "md:-translate-x-1/4 bg-red-500" 
               } mb-20 overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
