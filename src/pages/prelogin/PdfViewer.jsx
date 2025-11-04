@@ -263,8 +263,10 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
-            <div className=" h-full w-full">
-              {initial && <div className="text-4xl">this is the first div</div>}
+            <div className=" h-full flex w-full">
+              {initial && <div className="py-5 px-10 bg-red-400">
+                <p className="font-bold text-2xl text-center">Instructions</p>
+                </div>}
               <FlipBookWrapper
                 singlePage={true}
                 className={`w-full  ${
