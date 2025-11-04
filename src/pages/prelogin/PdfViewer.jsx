@@ -269,7 +269,7 @@ export default function PdfViewer({ url }) {
                 singlePage={true}
                 className={`
                   w-full mb-20 ${
-                pageNum <= 1 ? "md:-mx-[25%]" : "md:-mx-0"
+                pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
               }  overflow-hidden transition-all duration-500`}
                 currentPage={pageNum}
                 onPageChange={handlePageChange}

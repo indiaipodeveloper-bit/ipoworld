@@ -14,7 +14,10 @@ export default {
         soft: '0 10px 30px -12px rgba(2,6,23,.15)'
       },
       borderRadius: { xl: '1rem', '2xl': '1.25rem' }
-    }
+    },
+     screens: {
+      mdx: "759px",
+    },
   },
   plugins: []
 };
