@@ -55,7 +55,7 @@ export default function Page({ title, children }) {
         <>
           <button
             onClick={() => setSidebarOpen(true)}
-            className="cursor-pointer fixed top-5 left-2.5 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
+            className="cursor-pointer fixed top-5 left-2.5 w-11 h-11 z-30 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
           >
             <HiMenu className="w-5 h-5 text-white" />
           </button>

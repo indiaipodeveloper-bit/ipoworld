@@ -39,7 +39,6 @@ export default function PdfViewer({ url }) {
   // Load PDF document
   useEffect(() => {
     if (!!pageNum) {
-      console.log("true");
     }
     const loadPdf = async () => {
       try {
