@@ -263,17 +263,15 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div> */}
-            <div className=" h-full flex w-full">
-              {initial && <div className="hidden min-w-[100px] max-w-[500px] mx-auto md:block py-5 px-10  bg-red-400">
-                <p className="font-bold text-3xl text-center">Instructions</p>
-                <p className="font-bold text-xl">Click Or Swipe To Read</p>
-                <p className="font-bold text-xl">Use - and + Icons for Zoom In or Zoom Out</p>
-                </div>} 
+            <div
+              className={`h-full  mx-auto flex  w-full transition-all duration-300`}
+            >
               <FlipBookWrapper
                 singlePage={true}
-                className={`w-full  ${
-                  pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
-                } mb-20 overflow-hidden transition-all duration-500`}
+                className={`
+                  w-full mb-20 ${
+                pageNum <= 1 ? "-mx-[25%]" : "-mx-0"
+              }  overflow-hidden transition-all duration-500`}
                 currentPage={pageNum}
                 onPageChange={handlePageChange}
               >

@@ -58,6 +58,7 @@ export default function Library() {
 
     API.get("/pdfs")
       .then(({ data }) => {
+        console.log(data)
         setItems(data);
       })
       .catch((e) => {
