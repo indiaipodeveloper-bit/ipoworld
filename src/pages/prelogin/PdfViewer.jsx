@@ -254,7 +254,7 @@ export default function PdfViewer({ url }) {
         ) : (
           <>
             <div
-              className={`transition-opacity duration-700 ease-in-out ${
+              className={`transition-opacity outline-none border-none duration-700 ease-in-out ${
                 pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
               } text-white bg-black/70 transition-all duration-300 text-md lg:text-xl text-center bottom-1/3 w-[40%] z-50 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
             >
@@ -263,12 +263,12 @@ export default function PdfViewer({ url }) {
               <FaLongArrowAltRight />
             </div>
             <div
-              className={`h-full  mx-auto flex  w-full transition-all duration-300`}
+              className={`h-full  outline-none border-none mx-auto flex  w-full transition-all duration-300`}
             >
               <FlipBookWrapper
                 singlePage={true}
                 className={`
-                  w-full mb-20 ${
+                  w-full outline-none border-none mb-20 ${
                 pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
               }  overflow-hidden transition-all duration-500`}
                 currentPage={pageNum}
@@ -280,7 +280,7 @@ export default function PdfViewer({ url }) {
                     return (
                       <div
                         key={pageNumber}
-                        className="w-full h-full flex overflow-hidden bg-transparent"
+                        className="w-full h-full outline-none border-none flex overflow-hidden bg-transparent"
                         style={{
                           width: pageDimensions?.width || "auto",
                           height: pageDimensions?.height || "auto",
@@ -289,7 +289,7 @@ export default function PdfViewer({ url }) {
                         {imageData ? (
                           <div
                             style={{ backgroundImage: `url(${imageData})` }}
-                            className="h-full w-full bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
+                            className="h-full w-full outline-none border-none bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
                           ></div>
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gray-100">
