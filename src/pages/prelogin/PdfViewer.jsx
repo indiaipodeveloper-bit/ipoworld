@@ -263,44 +263,46 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
-            {/* <div className="h-full w-full bg-red-500 ">this is the red div</div> */}
-            <FlipBookWrapper
-              singlePage={true}
-              className={`w-full ${initial ? "-translate-x-full bg-red-500 translate-y-52" : ""} ${
-                pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
-              } mb-20 overflow-hidden transition-all duration-500`}
-              currentPage={pageNum}
-              onPageChange={handlePageChange}
-            >
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNumber) => {
-                  const imageData = pageRefs.current.get(pageNumber);
-                  return (
-                    <div
-                      key={pageNumber}
-                      className="w-full h-full flex overflow-hidden bg-white"
-                      style={{
-                        width: pageDimensions?.width || "auto",
-                        height: pageDimensions?.height || "auto",
-                      }}
-                    >
-                      {imageData ? (
-                        <div
-                          style={{ backgroundImage: `url(${imageData})` }}
-                          className="h-full w-full bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
-                        ></div>
-                      ) : (
-                        <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                          <span className="text-gray-500">
-                            Loading page {pageNumber}...
-                          </span>
-                        </div>
-                      )}
-                    </div>
-                  );
-                }
-              )}
-            </FlipBookWrapper>
+            <div className=" h-full w-full">
+              {initial && <div className="text-4xl">this is the first div</div>}
+              <FlipBookWrapper
+                singlePage={true}
+                className={`w-full  ${
+                  pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
+                } mb-20 overflow-hidden transition-all duration-500`}
+                currentPage={pageNum}
+                onPageChange={handlePageChange}
+              >
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (pageNumber) => {
+                    const imageData = pageRefs.current.get(pageNumber);
+                    return (
+                      <div
+                        key={pageNumber}
+                        className="w-full h-full flex overflow-hidden bg-white"
+                        style={{
+                          width: pageDimensions?.width || "auto",
+                          height: pageDimensions?.height || "auto",
+                        }}
+                      >
+                        {imageData ? (
+                          <div
+                            style={{ backgroundImage: `url(${imageData})` }}
+                            className="h-full w-full bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
+                          ></div>
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                            <span className="text-gray-500">
+                              Loading page {pageNumber}...
+                            </span>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+                )}
+              </FlipBookWrapper>
+            </div>
           </>
         )}
       </div>
