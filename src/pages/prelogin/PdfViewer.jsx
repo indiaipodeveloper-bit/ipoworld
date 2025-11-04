@@ -256,7 +256,7 @@ export default function PdfViewer({ url }) {
             <div
               className={`transition-opacity duration-700 ease-in-out ${
                 pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
-              } text-white bg-black/70 transition-all duration-300 text-lg lg:text-xl text-center top-1/4 w-1/3 z-50 my-5 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
+              } text-white bg-black/70 transition-all duration-300 text-md lg:text-xl text-center bottom-1/3 w-[40%] z-50 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
             >
               <FaLongArrowAltLeft />
               <p>Click or Swipe to Read</p>
