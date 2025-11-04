@@ -29,7 +29,7 @@ export default function PdfViewer({ url }) {
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [pageDimensions, setPageDimensions] = useState(true);
-  const [isInstructions, setisInstructions] = useState(true);
+  const [initial, setinitial] = useState(true);
 
   const scaleref = useRef(null);
   const renderingQueue = useRef(new Set());
@@ -183,7 +183,7 @@ export default function PdfViewer({ url }) {
   const handlePageChange = useCallback(
     (page) => {
       setPageNum(page);
-      setisInstructions(false);
+      setinitial(false);
       preloadPages(page);
       if (renderedPages.size > CACHE_SIZE) {
         cleanupCache(page);
@@ -263,14 +263,10 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
-            {isInstructions && (
-              <div className="hidden lg:flex h-full w-full bg-red-500 ">
-                this is the red div
-              </div>
-            )}
+            {/* <div className="h-full w-full bg-red-500 ">this is the red div</div> */}
             <FlipBookWrapper
               singlePage={true}
-              className={`w-full ${
+              className={`w-full ${initial ? "-translate-x-full" : ""} ${
                 pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
               } mb-20 overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
