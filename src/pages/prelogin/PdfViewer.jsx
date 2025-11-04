@@ -254,7 +254,7 @@ export default function PdfViewer({ url }) {
           </div>
         ) : (
           <>
-            <div
+            {/* <div
               className={`transition-opacity duration-700 ease-in-out ${
                 pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
               } text-white bg-black/70 transition-all duration-300 text-lg lg:text-xl text-center top-1/4 w-1/3 z-50 my-5 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
@@ -262,10 +262,12 @@ export default function PdfViewer({ url }) {
               <FaLongArrowAltLeft />
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
-            </div>
+            </div> */}
             <div className=" h-full flex w-full">
-              {initial && <div className="hidden md:block py-5 px-10 bg-red-400">
-                <p className="font-bold text-2xl text-center">Instructions</p>
+              {initial && <div className="hidden min-w-[100px] max-w-[500px] mx-auto md:block py-5 px-10  bg-red-400">
+                <p className="font-bold text-3xl text-center">Instructions</p>
+                <p className="font-bold text-xl">Click Or Swipe To Read</p>
+                <p className="font-bold text-xl">Use - and + Icons for Zoom In or Zoom Out</p>
                 </div>}
               <FlipBookWrapper
                 singlePage={true}
