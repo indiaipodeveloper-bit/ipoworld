@@ -124,7 +124,7 @@ export default function Page({ title, children }) {
         </>
       )}
 
-      <main className="flex-1 overflow-y-auto py-8">
+      <main className="flex-1 overflow-y-auto">
         {title && <h2 className="mb-4 text-2xl font-semibold">{title}</h2>}
         {children}
       </main>
