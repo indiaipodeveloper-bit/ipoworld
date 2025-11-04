@@ -264,7 +264,7 @@ export default function PdfViewer({ url }) {
               <FaLongArrowAltRight />
             </div>
             <div className=" h-full flex w-full">
-              {initial && <div className="hidden lg:block py-5 px-10 bg-red-400">
+              {initial && <div className="hidden md:block py-5 px-10 bg-red-400">
                 <p className="font-bold text-2xl text-center">Instructions</p>
                 </div>}
               <FlipBookWrapper
