@@ -268,7 +268,7 @@ export default function PdfViewer({ url }) {
                 <p className="font-bold text-3xl text-center">Instructions</p>
                 <p className="font-bold text-xl">Click Or Swipe To Read</p>
                 <p className="font-bold text-xl">Use - and + Icons for Zoom In or Zoom Out</p>
-                </div>}
+                </div>} 
               <FlipBookWrapper
                 singlePage={true}
                 className={`w-full  ${
