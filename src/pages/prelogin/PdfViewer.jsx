@@ -266,7 +266,7 @@ export default function PdfViewer({ url }) {
             {/* <div className="h-full w-full bg-red-500 ">this is the red div</div> */}
             <FlipBookWrapper
               singlePage={true}
-              className={`w-full ${initial ? "-translate-x-full" : ""} ${
+              className={`w-full ${initial ? "-translate-x-full bg-red-500 translate-y-52" : ""} ${
                 pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
               } mb-20 overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
