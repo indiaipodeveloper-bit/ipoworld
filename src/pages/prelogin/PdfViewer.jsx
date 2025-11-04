@@ -29,6 +29,7 @@ export default function PdfViewer({ url }) {
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
   const [pageDimensions, setPageDimensions] = useState(true);
+  const [isInstructions, setisInstructions] = useState(true);
 
   const scaleref = useRef(null);
   const renderingQueue = useRef(new Set());
@@ -37,8 +38,8 @@ export default function PdfViewer({ url }) {
 
   // Load PDF document
   useEffect(() => {
-    if(!!pageNum){
-      console.log("true")
+    if (!!pageNum) {
+      console.log("true");
     }
     const loadPdf = async () => {
       try {
@@ -182,6 +183,7 @@ export default function PdfViewer({ url }) {
   const handlePageChange = useCallback(
     (page) => {
       setPageNum(page);
+      setisInstructions(false);
       preloadPages(page);
       if (renderedPages.size > CACHE_SIZE) {
         cleanupCache(page);
@@ -261,7 +263,11 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
-            <div className="h-full w-full bg-red-500 this is the red div"></div>
+            {isInstructions && (
+              <div className="hidden lg:flex h-full w-full bg-red-500 ">
+                this is the red div
+              </div>
+            )}
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
