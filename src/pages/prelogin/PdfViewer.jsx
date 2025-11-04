@@ -264,7 +264,7 @@ export default function PdfViewer({ url }) {
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum <= 2 ? "md:-translate-x-1/4" : "md:translate-y-10"
+                pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-y-10"
               } mb-20 overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
@@ -275,7 +275,7 @@ export default function PdfViewer({ url }) {
                   return (
                     <div
                       key={pageNumber}
-                      className="w-full h-full m-auto flex overflow-hidden bg-white"
+                      className="w-full h-full flex overflow-hidden bg-white"
                       style={{
                         width: pageDimensions?.width || "auto",
                         height: pageDimensions?.height || "auto",
