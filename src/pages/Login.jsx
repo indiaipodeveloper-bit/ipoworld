@@ -36,20 +36,20 @@ export default function Login() {
 
   return (
     <Page>
-      <div className="grid lg:grid-cols-2 gap-8 items-stretch">
-        <div className="hidden lg:block">
-          <div className="relative h-full min-h-[520px] overflow-hidden rounded-2xl">
+      <div className="justify-center min-h-screen  items-center  flex flex-wrap gap-8">
+        <div className="bg-blue-300">
+          <div className="h-[500px] aspect-square w-auto   rounded-2xl">
             <img
               src={cover}
-              className="absolute inset-0 h-full w-full object-contain"
+              className=" object-cover"
             />
             <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 via-saffron/10 to-transparent" />
           </div>
         </div>
 
-        <div className="card p-8">
+        <div className="card  w-1/2 flex justify-center z-50 items-center flex-col p-8">
           {err && <div className="text-red-600 text-sm mb-2">{err}</div>}
-          <form onSubmit={submit} className="grid gap-4 max-w-md">
+          <form onSubmit={submit} className="flex w-full flex-col justify-start gap-4 max-w-md">
             <input
               className="input"
               type="email"

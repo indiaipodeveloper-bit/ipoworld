@@ -145,9 +145,9 @@ export default function Library() {
 
         {/* Magazines Grid */}
         <div
-          className={`grid ${
+          className={`grid  grid-rows-3 grid-cols-3 ${
             isReader && "hidden"
-          } grid-cols-1 transition-all duration-1000 md:grid-cols-2 lg:grid-cols-3 gap-6`}
+          } transition-all  duration-1000  gap-6`}
         >
           {error && <div className="text-red-600 text-sm mb-2">{error}</div>}
           {!items.length && !error && (
@@ -203,21 +203,8 @@ export default function Library() {
                 >
                   Close
                 </button>
-                {/* <button
-                  className="btn-secondary"
-                  onClick={() =>
-                    window.open(activeUrl.replace("#toolbar=0", ""), "_blank")
-                  }
-                >
-                  Open in new tab
-                </button> */}
               </div>
             </div>
-            {/* <iframe
-              title="pdf"
-              src={activeUrl}
-              className="mt-2 w-full h-[70vh] md:h-[80vh] rounded-xl border border-slate-200"
-            /> */}
             <div className="magazine-card w-full  overflow-hidden backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/70 relative">
               <PdfViewer url={activeUrl} />
             </div>
