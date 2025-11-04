@@ -261,10 +261,11 @@ export default function PdfViewer({ url }) {
               <p>Click or Swipe to Read</p>
               <FaLongArrowAltRight />
             </div>
+            <div className="h-full w-full bg-red-500 this is the red div"></div>
             <FlipBookWrapper
               singlePage={true}
               className={`w-full ${
-                pageNum <= 1 && "md:-translate-x-1/4 bg-red-500" 
+                pageNum <= 1 ? "md:-translate-x-1/4" : "md:translate-x-0"
               } mb-20 overflow-hidden transition-all duration-500`}
               currentPage={pageNum}
               onPageChange={handlePageChange}
