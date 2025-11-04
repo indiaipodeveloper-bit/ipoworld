@@ -280,7 +280,7 @@ export default function PdfViewer({ url }) {
                     return (
                       <div
                         key={pageNumber}
-                        className="w-full h-full flex overflow-hidden bg-white"
+                        className="w-full h-full flex overflow-hidden bg-transparent"
                         style={{
                           width: pageDimensions?.width || "auto",
                           height: pageDimensions?.height || "auto",
