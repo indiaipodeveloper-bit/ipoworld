@@ -4,6 +4,7 @@ import { API } from "../api.js";
 import { useNavigate } from "react-router-dom";
 import { HiSearch } from "react-icons/hi";
 import PdfViewer from "./prelogin/PdfViewer.jsx";
+import indiaIPOLogo from "../assets/ipologo2.png"
 
 const PLAN_LABEL = {
   digital_monthly: "Digital only (Monthly)",
@@ -18,38 +19,9 @@ export default function Library() {
   const [activeUrl, setActiveUrl] = useState("");
   const [me, setMe] = useState(null);
   const nav = useNavigate();
-  const [activeFilter, setActiveFilter] = useState("all");
   const [isReader, setisReader] = useState(false);
-  const filters = ["All", "2025", "2024", "PDF", "Recent"];
-  const stats = [
-    { label: "Total Magazines", value: "3" },
-    { label: "This Month", value: "1" },
-    { label: "Reading Time", value: "2.5h" },
-  ];
 
-  const magazines = [
-    {
-      id: 1,
-      title: "IPO World Magazine Vol. 5",
-      date: "October 2025",
-      pages: 45,
-      gradient: "from-blue-500 to-blue-700",
-    },
-    {
-      id: 2,
-      title: "IPO World Magazine Vol. 4",
-      date: "September 2025",
-      pages: 42,
-      gradient: "from-green-500 to-green-600",
-    },
-    {
-      id: 3,
-      title: "IPO World Magazine Vol. 3",
-      date: "August 2025",
-      pages: 48,
-      gradient: "from-pink-500 to-orange-500",
-    },
-  ];
+
 
   useEffect(() => {
     API.get("/auth/me")
@@ -84,7 +56,6 @@ export default function Library() {
 
   return (
     <Page>
-
       {error === "Subscription required" && (
         <div className="mt-4">
           <button className="btn" onClick={() => nav("/subscribe")}>
@@ -93,19 +64,17 @@ export default function Library() {
         </div>
       )}
 
-      <main className="fle w-full  overflow-y-auto mx-auto  p-6 lg:p-10">
+      <main className="w-full overflow-y-auto mx-auto  p-6 lg:p-10">
         {/* Header */}
-        <div className="mb-10 lg:ml-0 ml-12">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
-            Your Library
-          </h1>
-          <p className="text-gray-600">
-            Browse and read your IPO Magazine collection
-          </p>
+       <div className="flex flex-col gap-6">
+         <div className="flex gap-x-5 gap-y-2 items-center">
+          <img src={indiaIPOLogo} alt="" className="aspect-square h-[70px] mdx:m-0 m-auto" />
+          <p className="font-bold text-3xl">IPO World Magazine</p>
         </div>
+        
 
         {/* Search Bar */}
-        <div className="relative mb-8 max-w-md">
+        <div className="relative flex-1 m-auto  w-1/2">
           <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
           <input
             type="text"
@@ -114,40 +83,21 @@ export default function Library() {
           />
         </div>
 
-        {/* Filters */}
-        <div className="flex gap-2 mb-8 flex-wrap">
-          {filters.map((filter) => (
-            <button
-              key={filter}
-              onClick={() => setActiveFilter(filter.toLowerCase())}
-              className={`px-4 py-2 rounded-full cursor-pointer text-sm font-medium transition-all ${
-                activeFilter === filter.toLowerCase()
-                  ? "bg-blue-50 text-[#3661fd] border-2 border-[#3661fd]"
-                  : "bg-white text-gray-600 border-2 border-gray-200 hover:border-[#3661fd] hover:bg-blue-50 hover:text-[#3661fd]"
-              }`}
-            >
-              {filter}
-            </button>
-          ))}
+        <div className="mb-10 ">
+          <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
+            Your Library
+          </h1>
+          <p className="text-gray-600">
+            Browse and read your IPO Magazine collection
+          </p>
         </div>
+       </div>
 
-        {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 mb-8">
-          {stats.map((stat, index) => (
-            <div key={index} className="bg-white rounded-xl p-5 shadow-sm">
-              <h4 className="text-sm text-gray-600 mb-2">{stat.label}</h4>
-              <div className="text-3xl font-bold text-[#3661fd]">
-                {stat.value}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Magazines Grid */}
         <div
-          className={`grid  grid-rows-3 grid-cols-3 ${
-            isReader && "hidden"
-          } transition-all  duration-1000  gap-6`}
+          className={`flex flex-wrap
+             justify-between transition-all duration-1000 gap-y-10
+    ${isReader ? "hidden" : ""}
+  `}
         >
           {error && <div className="text-red-600 text-sm mb-2">{error}</div>}
           {!items.length && !error && (
@@ -158,7 +108,7 @@ export default function Library() {
             items.map((magazine) => (
               <div
                 key={magazine._id}
-                className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
+                className="bg-white rounded-xl w-full  lg:w-[30%] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
               >
                 <div
                   className={`h-48 bg-gradient-to-br ${magazine.gradient} flex items-center justify-center text-white text-2xl font-bold relative`}

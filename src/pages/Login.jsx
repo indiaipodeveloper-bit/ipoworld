@@ -3,13 +3,14 @@ import { useNavigate, Link } from "react-router-dom";
 import Page from "../components/Page.jsx";
 import { API } from "../api.js";
 import cover from "../assets/mag5.webp";
-import indiaipologo from "./prelogin/assets/logo.jpeg"
+import indiaipologo from "./prelogin/assets/logo.jpeg";
 
 export default function Login() {
   const nav = useNavigate();
   const [form, setForm] = useState({ email: "", password: "" });
   const [err, setErr] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [isErrorWhiteLogin, setisErrorWhiteLogin] = useState(false);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -32,6 +33,8 @@ export default function Login() {
       if (data.user?.subscriptionStatus === "active") nav("/library");
       else nav("/subscribe");
     } catch (e) {
+      console.log(e);
+      setisErrorWhiteLogin(e.response.data.error);
       setErr(e?.response?.data?.error || "Login failed");
     }
   };
@@ -40,9 +43,8 @@ export default function Login() {
     <Page>
       <div className="fixed w-full bg-white mx-2 top-0">
         <div className="w-full flex justify-center items-center gap-5">
-
-        <img src={indiaipologo} alt="" />
-        <p className="text-3xl font-bold">IPO World Magzines</p>
+          <img src={indiaipologo} alt="" />
+          <p className="text-3xl font-bold">IPO World Magzine</p>
         </div>
       </div>
       <div className="min-h-screen flex items-center justify-center p-4">
@@ -101,9 +103,14 @@ export default function Login() {
               </button>
             </div>
           </div>
+          <div className="">
+            {!!isErrorWhiteLogin && (
+              <p className="text-red-500">{isErrorWhiteLogin}</p>
+            )}
+          </div>
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center cursor-pointer group">
+            {/* <label className="flex items-center cursor-pointer group">
               <input
                 type="checkbox"
                 className="w-4 h-4 text-blue-600 border-2 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
@@ -111,7 +118,7 @@ export default function Login() {
               <span className="ml-2 text-sm text-gray-600 group-hover:text-gray-800">
                 Remember me
               </span>
-            </label>
+            </label> */}
             <Link
               to="/forgot-password"
               className="text-sm text-blue-600 hover:text-blue-700 font-semibold hover:underline"

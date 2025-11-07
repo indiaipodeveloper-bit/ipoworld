@@ -260,12 +260,12 @@ export default function PdfViewer({ url }) {
               <FaLongArrowAltRight />
             </div>
             <div
-              className={`h-full  outline-none border-none mx-auto flex  w-full transition-all duration-300`}
+              className={`h-full  outline-none border-none mx-auto flex mdx:justify-start justify-center  w-full transition-all duration-300`}
             >
               <FlipBookWrapper
                 singlePage={true}
                 className={`
-                  w-full outline-none border-none mb-20 ${
+                  w-full outline-none border-none mb-20 m-auto ${
                 pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
               }  overflow-hidden transition-all duration-500`}
                 currentPage={pageNum}
@@ -286,7 +286,7 @@ export default function PdfViewer({ url }) {
                         {imageData ? (
                           <div
                             style={{ backgroundImage: `url(${imageData})` }}
-                            className="h-full w-full outline-none border-none bg-no-repeat m-auto bg-center overflow-auto bg-contain object-cover"
+                            className="h-full w-full outline-none border-none bg-no-repeat m-auto bg-center  bg-contain object-cover"
                           ></div>
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gray-100">
