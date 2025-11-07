@@ -24,7 +24,7 @@ const RENDER_SCALE = 1.5;
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
   const [pageNum, setPageNum] = useState(1);
-  const [scale, setScale] = useState(0.8);
+  const [scale, setScale] = useState(0.9);
   const [renderedPages, setRenderedPages] = useState(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
@@ -265,7 +265,7 @@ export default function PdfViewer({ url }) {
               <FlipBookWrapper
                 singlePage={true}
                 className={`
-                  w-full outline-none border-none mb-20 m-auto ${
+                  w-full outline-none border-none m-auto ${
                 pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
               }  overflow-hidden transition-all duration-500`}
                 currentPage={pageNum}
