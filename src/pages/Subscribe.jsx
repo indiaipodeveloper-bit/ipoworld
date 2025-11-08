@@ -245,13 +245,13 @@ export default function Subscribe() {
   return (
     <Page
       title={
-        <div className="flex  gap-x-5 gap-y-2 items-center">
+        <div className="flex  my-5 gap-x-5 gap-y-2 items-center">
           <img
             src={indiaIPOLogo}
             alt=""
             className="aspect-square h-[70px] mdx:m-0 m-auto"
           />
-          <p className="font-bold text-3xl">IPO World Magazine</p>
+          <p className="font-bold text-xl lg:text-3xl">IPO World Magazine</p>
         </div>
       }
     >

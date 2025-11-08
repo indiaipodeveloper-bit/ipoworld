@@ -19,7 +19,7 @@ export default function Page({ title, children }) {
       localStorage.removeItem("user");
     } finally {
       setOpen(false);
-      nav("/", { replace: true });
+      nav("/");
     }
   };
 
@@ -54,7 +54,7 @@ export default function Page({ title, children }) {
       {hasUser && (
         <>
           <div
-            className={`h-screen md:relative fixed overflow-hidden bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
+            className={`h-full md:relative fixed overflow-hidden bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
               sidebarState == "true" ? "left-0 w-64 md:w-80" : "-left-80 w-0 "
             }`}
           >
@@ -64,7 +64,7 @@ export default function Page({ title, children }) {
                   localStorage.setItem("sidebarState", "true");
                   setsidebarState(localStorage.getItem("sidebarState", "true"));
                 }}
-                className="cursor-pointer top-5 fixed left-5 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
+                className="cursor-pointer top-5 fixed left-3 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
               >
                 <HiMenu className="w-5 h-5 text-white" />
               </button>
@@ -73,7 +73,7 @@ export default function Page({ title, children }) {
             <button
               onClick={() => {
                 localStorage.setItem("sidebarState", "false");
-                setsidebarState(localStorage.getItem("sidebarState", "false"));
+                setsidebarState(localStorage.getItem("sidebarState"));
               }}
               className=" p-1 z-50 absolute right-5 top-5 text-2xl cursor-pointer  bg-blue-500 text-gray-50 rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
             >
@@ -81,7 +81,7 @@ export default function Page({ title, children }) {
             </button>
 
             <div className="px-6 py-6 border-b border-gray-200">
-              <div className="flex items-center justify-start my-12 gap-3">
+              <div className="flex items-center justify-start my-1 gap-3">
                 <img
                   src={indiaIPOLogo}
                   className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold"
@@ -92,11 +92,13 @@ export default function Page({ title, children }) {
               </div>
             </div>
 
-            <nav className="flex-1 py-5 overflow-y-auto">
+            <nav className="flex-[1] py-5 overflow-y-auto">
               <Link to={`/library`}>
                 <div
                   onClick={() => {
                     localStorage.setItem("activeTab", "library");
+                    localStorage.setItem("sidebarState", false);
+                    setsidebarState(localStorage.getItem("sidebarState"));
                   }}
                   className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
                     localStorage.getItem("activeTab") === "library"
@@ -112,6 +114,8 @@ export default function Page({ title, children }) {
                 <div
                   onClick={() => {
                     localStorage.setItem("activeTab", "subscribe");
+                    localStorage.setItem("sidebarState", false);
+                    setsidebarState(localStorage.getItem("sidebarState"));
                   }}
                   className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
                     localStorage.getItem("activeTab") === "subscribe"
@@ -125,7 +129,7 @@ export default function Page({ title, children }) {
               </Link>
             </nav>
 
-            <div className="p-6 border-t border-gray-200">
+            <div className="p-6  border-t border-gray-200">
               <div className="bg-green-50 rounded-lg p-4 mb-4">
                 <h4 className="text-xs uppercase tracking-wide text-blue-900 mb-1">
                   Current Plan
@@ -136,7 +140,7 @@ export default function Page({ title, children }) {
                 onClick={logout}
                 className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-3 bg-[#3661fd] text-white rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
               >
-                <IoLogOutOutline className="w-4 h-4" />
+                <IoLogOutOutline className="" />
                 Logout
               </button>
             </div>

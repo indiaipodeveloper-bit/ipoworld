@@ -3,7 +3,7 @@ import { useNavigate, Link } from "react-router-dom";
 import Page from "../components/Page.jsx";
 import { API } from "../api.js";
 import cover from "../assets/mag5.webp";
-import indiaipologo from "./prelogin/assets/logo.jpeg";
+import indiaIPOLogo from "../assets/ipologo2.png";
 
 export default function Login() {
   const nav = useNavigate();
@@ -41,23 +41,27 @@ export default function Login() {
 
   return (
     <Page>
-      <div className="fixed w-full bg-white mx-2 top-0">
-        <div className="w-full flex justify-center items-center gap-5">
-          <img src={indiaipologo} alt="" />
-          <p className="text-3xl font-bold">IPO World Magzine</p>
+      <div className="w-full bg- top-0">
+        <div className="flex gap-x-5 gap-y-2 justify-center my-8 items-center">
+          <img
+            src={indiaIPOLogo}
+            alt=""
+            className="aspect-square h-[70px] mdx:m-0"
+          />
+          <p className="font-bold text-xl lg:text-3xl">IPO World Magazine</p>
         </div>
       </div>
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <div className="aspect-[4/5] flex  p-10 justify-center ">
+      <div className="flex flex-wrap-reverse justify-center py-4">
+        {/* <div className="aspect-[4/5] flex  p-10 justify-center ">
           <img
             src={cover}
             alt="cover image"
             className=" w-full max-w-[400px] rounded-lg min-w-[200px]"
           />
-        </div>
+        </div> */}
         <form
           onSubmit={submit}
-          className="space-y-5 min-w-[300px] bg-blue-50 w-1/3 p-10  rounded-lg  flex flex-col justify-center "
+          className="space-y-5  md:max-w-3xl bg-blue-100 w-full py-10 px-5  rounded-lg  flex flex-col "
         >
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
