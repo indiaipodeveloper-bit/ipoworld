@@ -27,6 +27,7 @@ export default function Page({ title, children }) {
     if (!localStorage.getItem("sidebarState")) {
       localStorage.setItem("sidebarState", false);
     }
+    localStorage.setItem("sidebarState","library")
   }, []);
 
   useEffect(() => {
