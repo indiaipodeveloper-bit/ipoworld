@@ -4,7 +4,12 @@ import pdfjsWorker from "pdfjs-dist/build/pdf.worker.mjs?worker";
 import FlipBookWrapper from "./Flipper";
 import Lottie from "react-lottie";
 import animationData from "../../assets/animation.json";
-import { FaLongArrowAltLeft, FaLongArrowAltRight } from "react-icons/fa";
+import {
+  FaLongArrowAltLeft,
+  FaLongArrowAltRight,
+  FaMinus,
+} from "react-icons/fa";
+import { TiPlus } from "react-icons/ti";
 
 const animationDefaultOptions = {
   loop: true,
@@ -201,109 +206,110 @@ export default function PdfViewer({ url }) {
   const zoomOut = () => setScale((s) => Math.max(s - 0.1, 0.5));
 
   return (
-    <div className="py-4">
-      <div className="flex justify-between items-center mb-4 gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-gray-700 dark:text-gray-600">
-            Pages {pageNum} / {totalPages || "…"}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <button
-            onClick={zoomOut}
-            className="px-2 py-1 flex justify-center items-center cursor-pointer z-50 bg-[#3661fd] text-white rounded-sm `"
-          >
-            −
-          </button>
-          <span className="text-gray-700 dark:text-gray-500">
-            {(scale * 100).toFixed(0)}%
-          </span>
-          <button
-            onClick={zoomIn}
-            className="px-2 py-1 z-50 flex justify-center items-center cursor-pointer bg-[#3661fd] text-white rounded-sm "
-          >
-            +
-          </button>
-        </div>
-      </div>
-
-      <div
-        ref={scaleref}
-        style={{
-          transform: `scale(${scale})`,
-          transformOrigin: "top center",
-        }}
-        className="flex justify-center items-center w-full"
-      >
-        {isLoading ? (
-          <div className="flex justify-center text-center items-center py-8">
-            <span className="text-gray-600">
-              <Lottie
-                className=""
-                isClickToPauseDisabled={true}
-                height={300}
-                width={300}
-                options={animationDefaultOptions}
-              />
+    <>
+      <div className="py-4">
+        <div className="flex justify-between items-center mb-4 gap-2">
+          <div className="flex items-center w-full mr-10 justify-end  gap-2">
+            <button
+              onClick={zoomOut}
+              className="flex text-2xl h-[40px] w-[40px] justify-center items-center rounded-full  cursor-pointer z-50 bg-[#3661fd] text-white"
+            >
+              <FaMinus className="text-2xl" />
+            </button>
+            <span className="text-gray-700 dark:text-gray-500">
+              {(scale * 100).toFixed(0)}%
             </span>
+            <button
+              onClick={zoomIn}
+              className="flex text-xl h-[40px] w-[40px] justify-center items-center rounded-full  cursor-pointer z-50 bg-[#3661fd] text-white"
+            >
+              <TiPlus className="text-2xl" />
+            </button>
           </div>
-        ) : (
-          <>
-            <div
-              className={`transition-opacity outline-none border-none duration-700 ease-in-out ${
-                pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
-              } text-white bg-black/70 transition-all duration-300 text-md lg:text-xl text-center bottom-1/3 w-[40%] z-50 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
-            >
-              <FaLongArrowAltLeft />
-              <p>Click or Swipe to Read</p>
-              <FaLongArrowAltRight />
+        </div>
+
+        <div
+          ref={scaleref}
+          style={{
+            transform: `scale(${scale})`,
+            transformOrigin: "top center",
+          }}
+          className="flex justify-center  items-center w-full"
+        >
+          {isLoading ? (
+            <div className="flex justify-center text-center items-center py-8">
+              <span className="text-gray-600">
+                <Lottie
+                  className=""
+                  isClickToPauseDisabled={true}
+                  height={300}
+                  width={300}
+                  options={animationDefaultOptions}
+                />
+              </span>
             </div>
-            <div
-              className={`h-full  outline-none border-none mx-auto flex mdx:justify-start justify-center  w-full transition-all duration-300`}
-            >
-              <FlipBookWrapper
-                singlePage={true}
-                className={`
-                  w-full outline-none border-none m-auto ${
-                pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
-              }  overflow-hidden transition-all duration-500`}
-                currentPage={pageNum}
-                onPageChange={handlePageChange}
+          ) : (
+            <>
+              <div
+                className={`transition-opacity outline-none border-none duration-700 ease-in-out ${
+                  pageNum <= 1 ? "opacity-100 flex" : "opacity-0 hidden"
+                } text-white bg-black/70 transition-all duration-300 text-md lg:text-xl text-center bottom-1/3 w-[40%] z-50 mx-auto fixed font-extrabold gap-x-10 justify-center items-center rounded-lg backdrop-blur-sm p-4`}
               >
-                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (pageNumber) => {
-                    const imageData = pageRefs.current.get(pageNumber);
-                    return (
-                      <div
-                        key={pageNumber}
-                        className="w-full h-full outline-none border-none flex overflow-hidden bg-transparent"
-                        style={{
-                          width: pageDimensions?.width || "auto",
-                          height: pageDimensions?.height || "auto",
-                        }}
-                      >
-                        {imageData ? (
-                          <div
-                            style={{ backgroundImage: `url(${imageData})` }}
-                            className="h-full w-full outline-none border-none bg-no-repeat m-auto bg-center  bg-contain object-cover"
-                          ></div>
-                        ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gray-100">
-                            <span className="text-gray-500">
-                              Loading page {pageNumber}...
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  }
-                )}
-              </FlipBookWrapper>
-            </div>
-          </>
-        )}
+                <FaLongArrowAltLeft />
+                <p>Click or Swipe to Read</p>
+                <FaLongArrowAltRight />
+              </div>
+              <div
+                className={`h-full  outline-none border-none mx-auto flex mdx:justify-start justify-center  w-full transition-all duration-300`}
+              >
+                <FlipBookWrapper
+                  singlePage={true}
+                  className={`
+                  w-full outline-none border-none m-auto ${
+                    pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
+                  }  overflow-hidden transition-all duration-500`}
+                  currentPage={pageNum}
+                  onPageChange={handlePageChange}
+                >
+                  {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                    (pageNumber) => {
+                      const imageData = pageRefs.current.get(pageNumber);
+                      return (
+                        <div
+                          key={pageNumber}
+                          className="w-full h-full outline-none border-none flex overflow-hidden bg-transparent"
+                          style={{
+                            width: pageDimensions?.width || "auto",
+                            height: pageDimensions?.height || "auto",
+                          }}
+                        >
+                          {imageData ? (
+                            <div
+                              style={{ backgroundImage: `url(${imageData})` }}
+                              className="h-full w-full outline-none border-none bg-no-repeat m-auto bg-center  bg-contain object-cover"
+                            ></div>
+                          ) : (
+                            <div className="w-full h-full flex items-center justify-center bg-gray-100">
+                              <span className="text-gray-500">
+                                Loading page {pageNumber}...
+                              </span>
+                            </div>
+                          )}
+                        </div>
+                      );
+                    }
+                  )}
+                </FlipBookWrapper>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+      <div className="flex m-auto  justify-center text-xl items-center gap-2">
+        <span className="text-gray-700 dark:text-gray-600">
+          Pages {pageNum} / {totalPages || "…"}
+        </span>
+      </div>
+    </>
   );
 }

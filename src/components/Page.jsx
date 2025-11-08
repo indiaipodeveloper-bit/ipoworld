@@ -151,7 +151,7 @@ export default function Page({ title, children }) {
         </>
       )}
 
-      <main className="w-[90%] mx-auto overflow-y-auto">
+      <main className="w-full mx-auto overflow-y-auto">
         {title && (
           <h2 className="mb-4 mx-auto flex justify-center my-5 text-2xl font-semibold">
             {title}

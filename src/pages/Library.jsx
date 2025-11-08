@@ -156,7 +156,7 @@ export default function Library() {
                 </button>
               </div>
             </div>
-            <div className="magazine-card w-full  overflow-hidden backdrop-blur-xl p-8 rounded-3xl shadow-xl border border-white/70 relative">
+            <div className="w-full  overflow-hidden backdrop-blur-xl py-5  rounded-3xl shadow-xl border border-white/70 relative">
               <PdfViewer url={activeUrl} />
             </div>
           </div>

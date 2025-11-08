@@ -21,8 +21,8 @@ const FlipBookWrapper = ({
   return (
     <HTMLFlipBook
       size="stretch"
-      width={400}
-      height={600}
+      width={500}
+      height={700}
       minWidth={315}
       maxWidth={1000}
       maxHeight={1000}
