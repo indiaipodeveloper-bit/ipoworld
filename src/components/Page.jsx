@@ -28,9 +28,8 @@ export default function Page({ title, children }) {
       localStorage.setItem("sidebarState", false);
     }
     if (!localStorage.getItem("activeTab")) {
-      localStorage.setItem("activeTab","library")
+      localStorage.setItem("activeTab", "library");
     }
-    
   }, []);
 
   useEffect(() => {
@@ -66,7 +65,7 @@ export default function Page({ title, children }) {
               <button
                 onClick={() => {
                   localStorage.setItem("sidebarState", "true");
-                  setsidebarState(localStorage.getItem("sidebarState", "true"));
+                  setsidebarState(localStorage.getItem("sidebarState"));
                 }}
                 className="cursor-pointer top-5 fixed left-3 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
               >
