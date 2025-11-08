@@ -4,7 +4,7 @@ import { API } from "../api.js";
 import { useNavigate } from "react-router-dom";
 import { HiSearch } from "react-icons/hi";
 import PdfViewer from "./prelogin/PdfViewer.jsx";
-import indiaIPOLogo from "../assets/ipologo2.png"
+import indiaIPOLogo from "../assets/ipologo2.png";
 
 const PLAN_LABEL = {
   digital_monthly: "Digital only (Monthly)",
@@ -20,8 +20,6 @@ export default function Library() {
   const [me, setMe] = useState(null);
   const nav = useNavigate();
   const [isReader, setisReader] = useState(false);
-
-
 
   useEffect(() => {
     API.get("/auth/me")
@@ -66,32 +64,35 @@ export default function Library() {
 
       <main className="w-full overflow-y-auto mx-auto  p-6 lg:p-10">
         {/* Header */}
-       <div className="flex flex-col gap-6">
-         <div className="flex gap-x-5 gap-y-2 items-center">
-          <img src={indiaIPOLogo} alt="" className="aspect-square h-[70px] mdx:m-0 m-auto" />
-          <p className="font-bold text-3xl">IPO World Magazine</p>
-        </div>
-        
+        <div className="flex flex-col gap-6">
+          <div className="flex gap-x-5 gap-y-2 mt-8 items-center">
+            <img
+              src={indiaIPOLogo}
+              alt=""
+              className="aspect-square h-[70px] mdx:m-0"
+            />
+            <p className="font-bold text-xl lg:text-3xl">IPO World Magazine</p>
+          </div>
 
-        {/* Search Bar */}
-        <div className="relative flex-1 m-auto  w-1/2">
-          <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search magazines..."
-            className="w-full pl-12 pr-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
-          />
-        </div>
+          {/* Search Bar */}
+          <div className="relative flex-1 m-auto w-full lg:w-1/2">
+            <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search magazines..."
+              className="w-full pl-12 pr-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
+            />
+          </div>
 
-        <div className="mb-10 ">
-          <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
-            Your Library
-          </h1>
-          <p className="text-gray-600">
-            Browse and read your IPO Magazine collection
-          </p>
+          <div className="mb-10 ">
+            <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-2">
+              Your Library
+            </h1>
+            <p className="text-gray-600">
+              Browse and read your IPO Magazine collection
+            </p>
+          </div>
         </div>
-       </div>
 
         <div
           className={`flex flex-wrap

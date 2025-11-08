@@ -24,6 +24,12 @@ export default function Page({ title, children }) {
   };
 
   useEffect(() => {
+    if (localStorage.getItem("sidebarState")) {
+      localStorage.setItem("sidebarState", false);
+    }
+  }, []);
+
+  useEffect(() => {
     if (!open) return;
     const onClick = (e) => {
       if (
@@ -49,7 +55,7 @@ export default function Page({ title, children }) {
         <>
           <div
             className={`h-screen md:relative fixed overflow-hidden bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
-              sidebarState == "true" ? "left-0 w-80" : "-left-80 w-0 "
+              sidebarState == "true" ? "left-0 w-64 md:w-80" : "-left-80 w-0 "
             }`}
           >
             {sidebarState == "false" && (
@@ -78,10 +84,10 @@ export default function Page({ title, children }) {
               <div className="flex items-center justify-start my-12 gap-3">
                 <img
                   src={indiaIPOLogo}
-                  className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-lg"
+                  className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold"
                 />
                 <span className="font-semibold text-gray-800">
-                   IPO World Magazine
+                  IPO World Magazine
                 </span>
               </div>
             </div>
@@ -139,7 +145,11 @@ export default function Page({ title, children }) {
       )}
 
       <main className="w-[90%] mx-auto overflow-y-auto">
-        {title && <h2 className="mb-4 mx-auto flex justify-center my-5 text-2xl font-semibold">{title}</h2>}
+        {title && (
+          <h2 className="mb-4 mx-auto flex justify-center my-5 text-2xl font-semibold">
+            {title}
+          </h2>
+        )}
         {children}
       </main>
     </div>
