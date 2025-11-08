@@ -7,17 +7,12 @@ import indiaIPOLogo from "../assets/indiaipo.jpg";
 export default function Page({ title, children }) {
   const nav = useNavigate();
   const hasUser = !!localStorage.getItem("token");
-  // const hasUser = true;
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const btnRef = useRef(null);
   const panelRef = useRef(null);
-  const navItems = [
-    { id: "library", label: "Library", icon: HiBookOpen },
-    { id: "subscribe", label: "Subscribe", icon: HiPlus },
-  ];
-  const [activeNav, setActiveNav] = useState("library");
-
+  const [sidebarState, setsidebarState] = useState(
+    localStorage.getItem("sidebarState")
+  );
   const logout = () => {
     try {
       localStorage.removeItem("token");
@@ -53,13 +48,16 @@ export default function Page({ title, children }) {
       {hasUser && (
         <>
           <div
-            className={`h-screen relative overflow-hidden bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
-              sidebarOpen ? "left-0 w-80" : "-left-80 w-0 "
+            className={`h-screen md:relative fixed overflow-hidden bg-white border-r border-gray-200 shadow-xl z-40 transition-all duration-300 flex flex-col ${
+              sidebarState == "true" ? "left-0 w-80" : "-left-80 w-0 "
             }`}
           >
-            {!sidebarOpen && (
+            {sidebarState == "false" && (
               <button
-                onClick={() => setSidebarOpen(true)}
+                onClick={() => {
+                  localStorage.setItem("sidebarState", "true");
+                  setsidebarState(localStorage.getItem("sidebarState", "true"));
+                }}
                 className="cursor-pointer top-5 fixed left-5 w-11 h-11 bg-blue-500 rounded-xl shadow-lg hover:bg-blue-600 hover:scale-105 transition-all flex items-center justify-center"
               >
                 <HiMenu className="w-5 h-5 text-white" />
@@ -67,7 +65,10 @@ export default function Page({ title, children }) {
             )}
 
             <button
-              onClick={() => setSidebarOpen(false)}
+              onClick={() => {
+                localStorage.setItem("sidebarState", "false");
+                setsidebarState(localStorage.getItem("sidebarState", "false"));
+              }}
               className=" p-1 z-50 absolute right-5 top-5 text-2xl cursor-pointer  bg-blue-500 text-gray-50 rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"
             >
               <HiX />
@@ -80,31 +81,42 @@ export default function Page({ title, children }) {
                   className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold text-lg"
                 />
                 <span className="font-semibold text-gray-800">
-                  India IPO Magazine
+                   IPO World Magazine
                 </span>
               </div>
             </div>
 
             <nav className="flex-1 py-5 overflow-y-auto">
-              {navItems.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <div
-                    key={item.id}
-                    onClick={() => {
-                      setActiveNav(item.id);
-                    }}
-                    className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
-                      activeNav === item.id
-                        ? "bg-blue-50 text-[#3661fd] border-[#3661fd] font-medium"
-                        : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-blue-500"
-                    }`}
-                  >
-                    <Icon className="w-5 h-5" />
-                    <Link to={`/${item.id}`}>{item.label}</Link>
-                  </div>
-                );
-              })}
+              <Link to={`/library`}>
+                <div
+                  onClick={() => {
+                    localStorage.setItem("activeTab", "library");
+                  }}
+                  className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
+                    localStorage.getItem("activeTab") === "library"
+                      ? "bg-blue-50 text-[#3661fd] border-[#3661fd] font-medium"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-blue-500"
+                  }`}
+                >
+                  <HiBookOpen />
+                  <p>Library</p>
+                </div>
+              </Link>
+              <Link to={`/subscribe`}>
+                <div
+                  onClick={() => {
+                    localStorage.setItem("activeTab", "subscribe");
+                  }}
+                  className={`flex items-center gap-3 px-6 py-3 cursor-pointer transition-all border-l-4 ${
+                    localStorage.getItem("activeTab") === "subscribe"
+                      ? "bg-blue-50 text-[#3661fd] border-[#3661fd] font-medium"
+                      : "border-transparent text-gray-600 hover:bg-gray-50 hover:text-blue-500"
+                  }`}
+                >
+                  <HiPlus />
+                  <p className="">Subscribe</p>
+                </div>
+              </Link>
             </nav>
 
             <div className="p-6 border-t border-gray-200">
@@ -127,7 +139,7 @@ export default function Page({ title, children }) {
       )}
 
       <main className="w-[90%] mx-auto overflow-y-auto">
-        {title && <h2 className="mb-4 text-2xl font-semibold">{title}</h2>}
+        {title && <h2 className="mb-4 mx-auto flex justify-center my-5 text-2xl font-semibold">{title}</h2>}
         {children}
       </main>
     </div>
