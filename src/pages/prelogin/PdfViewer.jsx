@@ -260,12 +260,12 @@ export default function PdfViewer({ url }) {
                 <FaLongArrowAltRight />
               </div>
               <div
-                className={`h-full  outline-none border-none mx-auto flex   bg-red-400  w-full transition-all duration-300`}
+                className={`h-full  outline-none border-none mx-auto flex w-full transition-all duration-300`}
               >
                 <FlipBookWrapper
                   singlePage={true}
                   className={`
-                  w-full outline-none bg-green-500  mdx:-mx-0 border-none 
+                  w-full outline-none   mdx:-mx-0 border-none 
                   ${pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"}
                     overflow-hidden transition-all m-auto duration-500`}
                   currentPage={pageNum}
