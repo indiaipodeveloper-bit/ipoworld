@@ -81,7 +81,7 @@ export default function Page({ title, children }) {
             </button>
 
             <div className="px-6 py-6 border-b border-gray-200">
-              <div className="flex items-center justify-start my-1 gap-3">
+              <div className="flex my-5 items-center justify-start gap-3">
                 <img
                   src={indiaIPOLogo}
                   className="w-16 h-16 rounded-lg flex items-center justify-center text-white font-bold"
