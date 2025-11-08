@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { HiSearch } from "react-icons/hi";
 import PdfViewer from "./prelogin/PdfViewer.jsx";
 import indiaIPOLogo from "../assets/ipologo2.png";
+import magzineCover from "./prelogin/assets/mag5.webp";
 
 const PLAN_LABEL = {
   digital_monthly: "Digital only (Monthly)",
@@ -109,24 +110,30 @@ export default function Library() {
             items.map((magazine) => (
               <div
                 key={magazine._id}
-                className="bg-white rounded-xl w-full  lg:w-[30%] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
+                className="bg-white rounded-xl w-full  lg:w-[30%] max-h-[600px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
               >
                 <div
-                  className={`h-48 bg-gradient-to-br ${magazine.gradient} flex items-center justify-center text-white text-2xl font-bold relative`}
+                  className={` bg-gradient-to-br ${magazine.gradient}  overflow-hidden h-[400px] items-center justify-center text-white text-2xl font-bold relative`}
                 >
-                  <span>VOL. {magazine.id + 2}</span>
-                  <span className="absolute top-4 right-4 bg-white text-[#3661fd] text-xs font-semibold px-3 py-1 rounded-full uppercase">
-                    PDF
-                  </span>
+                  {!magazine.cover ? (
+                    <img
+                      src={magzineCover}
+                      alt="image"
+                      className="object-contain w-full "
+                    />
+                  ) : (
+                    <img
+                      src={magazine.cover}
+                      alt="image"
+                      className="object-contain w-full "
+                    />
+                  )}
                 </div>
                 <div className="p-5">
                   <h3 className="font-semibold text-gray-800 mb-2">
                     {magazine.title}
                   </h3>
-                  <div className="flex items-center gap-4 text-sm text-gray-600 mb-4">
-                    <span>📅 {magazine.date}</span>
-                    <span>📄 {magazine.pages} pages</span>
-                  </div>
+
                   <button
                     onClick={() => {
                       openPdf(magazine._id);
@@ -134,7 +141,7 @@ export default function Library() {
                     }}
                     className="w-full py-2.5 cursor-pointer bg-[#3661fd] text-white rounded-lg font-medium hover:bg-blue-600 transition-all"
                   >
-                    View inline
+                    Read Now
                   </button>
                 </div>
               </div>
