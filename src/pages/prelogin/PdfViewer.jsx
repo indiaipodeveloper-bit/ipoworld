@@ -29,7 +29,7 @@ const RENDER_SCALE = 1.5;
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
   const [pageNum, setPageNum] = useState(1);
-  const [scale, setScale] = useState(0.9);
+  const [scale, setScale] = useState(1);
   const [renderedPages, setRenderedPages] = useState(new Map());
   const [isLoading, setIsLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
@@ -216,7 +216,7 @@ export default function PdfViewer({ url }) {
             >
               <FaMinus className="text-2xl" />
             </button>
-            <span className="text-gray-700 dark:text-gray-500">
+            <span className="text-gray-700 font-bold dark:text-gray-700">
               {(scale * 100).toFixed(0)}%
             </span>
             <button
@@ -260,14 +260,14 @@ export default function PdfViewer({ url }) {
                 <FaLongArrowAltRight />
               </div>
               <div
-                className={`h-full  outline-none border-none mx-auto flex mdx:justify-start justify-center  w-full transition-all duration-300`}
+                className={`h-full  outline-none border-none mx-auto flex   bg-red-400  w-full transition-all duration-300`}
               >
                 <FlipBookWrapper
                   singlePage={true}
                   className={`
-                  w-full outline-none border-none m-auto ${
-                    pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"
-                  }  overflow-hidden transition-all duration-500`}
+                  w-full outline-none bg-green-500  mdx:-mx-0 border-none 
+                  ${pageNum <= 1 ? "mdx:-mx-[25%]" : "mdx:-mx-0"}
+                    overflow-hidden transition-all m-auto duration-500`}
                   currentPage={pageNum}
                   onPageChange={handlePageChange}
                 >
@@ -305,8 +305,8 @@ export default function PdfViewer({ url }) {
           )}
         </div>
       </div>
-      <div className="flex m-auto  justify-center text-xl items-center gap-2">
-        <span className="text-gray-700 dark:text-gray-600">
+      <div className="flex m-auto  justify-center text-lg items-center gap-2">
+        <span className="text-gray-700 dark:text-gray-600 font-semibold">
           Pages {pageNum} / {totalPages || "…"}
         </span>
       </div>

@@ -22,7 +22,7 @@ export default {
       md: "768px",
       lg: "1024px",
       xl: "1280px",
-      mdx: "845px",
+      mdx: "695.9px",
       "2xl": "1536px",
     },
   },
