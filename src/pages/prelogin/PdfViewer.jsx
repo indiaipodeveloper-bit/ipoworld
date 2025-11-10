@@ -183,7 +183,6 @@ export default function PdfViewer({ url }) {
     [totalPages, renderedPages.size]
   );
 
-  // Handle page change
   const handlePageChange = useCallback(
     (page) => {
       setPageNum(page);
