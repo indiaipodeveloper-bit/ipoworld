@@ -19,8 +19,12 @@ export default function Library() {
   const [error, setError] = useState("");
   const [activeUrl, setActiveUrl] = useState("");
   const [me, setMe] = useState(null);
+  const [searchMagazineTerm, setsearchMagazineTerm] = useState("");
   const nav = useNavigate();
   const [isReader, setisReader] = useState(false);
+  const filteredMagazind = items.filter((e) =>
+    e.title.toLowerCase().includes(searchMagazineTerm.toLowerCase())
+  );
 
   useEffect(() => {
     API.get("/auth/me")
@@ -79,6 +83,9 @@ export default function Library() {
           <div className="relative flex-1 m-auto w-full lg:w-1/2">
             <HiSearch className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             <input
+              onChange={(e) => {
+                setsearchMagazineTerm(e.target.value);
+              }}
               type="text"
               placeholder="Search magazines..."
               className="w-full pl-12 pr-5 py-3 border-2 border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all"
@@ -97,17 +104,17 @@ export default function Library() {
 
         <div
           className={`flex flex-wrap
-             justify-between transition-all duration-1000 gap-y-10
+             justify-evenly transition-all duration-1000 gap-y-10
     ${isReader ? "hidden" : ""}
   `}
         >
           {error && <div className="text-red-600 text-sm mb-2">{error}</div>}
-          {!items.length && !error && (
+          {!filteredMagazind.length && !error && (
             <div className="muted">No issues yet.</div>
           )}
 
-          {!!items.length &&
-            items.map((magazine) => (
+          {!!filteredMagazind.length &&
+            filteredMagazind.map((magazine) => (
               <div
                 key={magazine._id}
                 className="bg-white rounded-xl w-full  lg:w-[30%] max-h-[600px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
@@ -157,7 +164,7 @@ export default function Library() {
                   onClick={() => {
                     setActiveUrl("");
                     setisReader(false);
-                    window.location.reload()
+                    window.location.reload();
                   }}
                 >
                   Close
