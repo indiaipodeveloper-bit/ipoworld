@@ -6,6 +6,7 @@ import Library from "./pages/Library";
 import PreLogin from "./pages/PreLogin";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import { useEffect } from "react";
 
 function getAuth() {
   const token = localStorage.getItem("token");
@@ -36,6 +37,15 @@ function SubscribeGuard({ children }) {
 export default function App() {
   const { isLoggedIn, isSubscribed } = getAuth();
   const isActive = isLoggedIn && isSubscribed;
+
+  useEffect(() => {
+    if (!localStorage.getItem("sidebarState")) {
+      localStorage.setItem("sidebarState", false);
+    }
+    if (!localStorage.getItem("activeTab")) {
+      localStorage.setItem("activeTab", "library");
+    }
+  }, []);
 
   return (
     <Routes>

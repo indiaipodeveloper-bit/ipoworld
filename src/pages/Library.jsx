@@ -157,6 +157,7 @@ export default function Library() {
                   onClick={() => {
                     setActiveUrl("");
                     setisReader(false);
+                    window.location.reload()
                   }}
                 >
                   Close

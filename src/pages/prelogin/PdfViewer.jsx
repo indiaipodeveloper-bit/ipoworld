@@ -22,9 +22,10 @@ pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
 ).toString();
 
 // Configuration
-const CACHE_SIZE = 20;
-const PRELOAD_AHEAD = 5;
+const CACHE_SIZE = 15;
+const PRELOAD_AHEAD = 3;
 const RENDER_SCALE = 1.5;
+const JPEG_QUALITY = 0.7;
 
 export default function PdfViewer({ url }) {
   const [pdf, setPdf] = useState(null);
@@ -35,11 +36,13 @@ export default function PdfViewer({ url }) {
   const [totalPages, setTotalPages] = useState(0);
   const [pageDimensions, setPageDimensions] = useState(true);
   const [initial, setinitial] = useState(true);
+  const [searchPageNum, setsearchPageNum] = useState("");
 
   const scaleref = useRef(null);
   const renderingQueue = useRef(new Set());
   const isInitialLoad = useRef(true);
   const pageRefs = useRef(new Map());
+  const pageChangeTimer = useRef(null);
 
   // Load PDF document
   useEffect(() => {
@@ -65,7 +68,12 @@ export default function PdfViewer({ url }) {
       }
     };
     loadPdf();
-  }, []);
+    return () => {
+      if (doc) {
+        doc.destroy();
+      }
+    };
+  }, [url]);
 
   useEffect(() => {
     if (scaleref.current) {
@@ -86,6 +94,13 @@ export default function PdfViewer({ url }) {
       try {
         renderingQueue.current.add(pageNumber);
         const page = await pdf.getPage(pageNumber);
+
+        // Check if we've navigated far away - cancel render
+        if (Math.abs(pageNumber - pageNum) > PRELOAD_AHEAD + 3) {
+          renderingQueue.current.delete(pageNumber);
+          return null;
+        }
+
         const viewport = page.getViewport({ scale: RENDER_SCALE });
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d", {
@@ -110,6 +125,11 @@ export default function PdfViewer({ url }) {
         const imageData = canvas.toDataURL("image/jpeg", 0.85);
         pageRefs.current.set(pageNumber, imageData);
         renderingQueue.current.delete(pageNumber);
+
+        // Clean up canvas explicitly
+        canvas.width = 0;
+        canvas.height = 0;
+
         return imageData;
       } catch (error) {
         console.error(`Error rendering page ${pageNumber}:`, error);
@@ -117,7 +137,7 @@ export default function PdfViewer({ url }) {
         return null;
       }
     },
-    [pdf]
+    [pdf, pageNum]
   );
 
   const preRenderInitialPages = useCallback(async () => {
@@ -166,11 +186,25 @@ export default function PdfViewer({ url }) {
   // Clean up old pages from memory
   const cleanupCache = useCallback(
     (centerPage) => {
-      if (renderedPages.size <= CACHE_SIZE) return;
-      const newCache = new Map();
+      if (pageRefs.current.size <= CACHE_SIZE) return;
+
       const start = Math.max(1, centerPage - CACHE_SIZE / 2);
       const end = Math.min(totalPages, centerPage + CACHE_SIZE / 2);
 
+      // Remove pages outside the cache range from pageRefs
+      const keysToDelete = [];
+      pageRefs.current.forEach((_, pageNum) => {
+        if (pageNum < start || pageNum > end) {
+          keysToDelete.push(pageNum);
+        }
+      });
+
+      keysToDelete.forEach((key) => {
+        pageRefs.current.delete(key);
+      });
+
+      // Update renderedPages state
+      const newCache = new Map();
       for (let i = start; i <= end; i++) {
         const pageData = pageRefs.current.get(i);
         if (pageData) {
@@ -180,19 +214,27 @@ export default function PdfViewer({ url }) {
 
       setRenderedPages(newCache);
     },
-    [totalPages, renderedPages.size]
+    [totalPages]
   );
 
   const handlePageChange = useCallback(
     (page) => {
       setPageNum(page);
       setinitial(false);
-      preloadPages(page);
-      if (renderedPages.size > CACHE_SIZE) {
-        cleanupCache(page);
+
+      // Debounce preloading and cleanup to prevent rapid fire issues
+      if (pageChangeTimer.current) {
+        clearTimeout(pageChangeTimer.current);
       }
+
+      pageChangeTimer.current = setTimeout(() => {
+        preloadPages(page);
+        if (pageRefs.current.size > CACHE_SIZE) {
+          cleanupCache(page);
+        }
+      }, 100);
     },
-    [preloadPages, cleanupCache, renderedPages.size]
+    [preloadPages, cleanupCache]
   );
 
   useEffect(() => {
@@ -201,13 +243,28 @@ export default function PdfViewer({ url }) {
     }
   }, [pdf, preRenderInitialPages]);
 
+  // Cleanup on unmount
+  useEffect(() => {
+    return () => {
+      if (pageChangeTimer.current) {
+        clearTimeout(pageChangeTimer.current);
+      }
+      pageRefs.current.clear();
+      renderingQueue.current.clear();
+    };
+  }, []);
+
   const zoomIn = () => setScale((s) => Math.min(s + 0.1, 1.2));
   const zoomOut = () => setScale((s) => Math.max(s - 0.1, 0.5));
 
   return (
     <>
       <div className="py-4">
-        <div className="flex justify-between items-center mb-4 gap-2">
+        <div className="flex justify-between items-center px-5 mb-4 gap-2">
+          {/* <div className="w-1/4 ">
+          <input type="text"  placeholder="Search Page Number..." className="w-full p-5 h-[40px] outline-none border-none bg-blue-100 bg-gray-20 rounded-md" />
+
+          </div> */}
           <div className="flex items-center w-full mr-10 justify-end  gap-2">
             <button
               onClick={zoomOut}
