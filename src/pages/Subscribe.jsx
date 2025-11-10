@@ -14,13 +14,9 @@ const MONTHLY_PRICE = {
 const DISCOUNT_PCT = { 1: 15, 2: 22, 3: 35 };
 
 const plans = [
-  { key: "digital_monthly", label: "Digital only (Monthly)" },
   { key: "digital_annual", label: "Digital only (Annual)" },
-  { key: "hindi_digital_monthly", label: "Hindi Digital only (Monthly)" },
   { key: "hindi_digital_annual", label: "Hindi Digital only (Annual)" },
-  { key: "print_only", label: "Print only (Monthly)" },
   { key: "print_only_annual", label: "Print only (Annual)" },
-  { key: "print_monthly", label: "Digital + Print (Monthly)" },
   { key: "print_annual", label: "Digital + Print (Annual)" },
 ];
 
@@ -29,12 +25,10 @@ const fmt = new Intl.NumberFormat("en-IN");
 
 function planTypeFromKey(k) {
   if (k.startsWith("hindi_digital")) return "hindi_digital";
-  if (k.startsWith("digital")) return "digital";
   if (k.startsWith("print_only")) return "print_only";
-  if (k.startsWith("print")) return "print";
+  if (k.startsWith("print_")) return "print";
   return "digital";
 }
-
 function tabFromKey(k) {
   return k.startsWith("hindi_") ? "hindi" : "english";
 }
@@ -44,7 +38,7 @@ const HINDI_PLANS = plans.filter((p) => p.key.startsWith("hindi_"));
 
 export default function Subscribe() {
   const nav = useNavigate();
-  const [planKey, setPlanKey] = useState("digital_monthly");
+  const [planKey, setPlanKey] = useState("digital_annual");
   const [termYears, setTermYears] = useState(1);
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState("");
@@ -99,12 +93,16 @@ export default function Subscribe() {
     API.get("/auth/me")
       .then(({ data }) => {
         setMe(data);
-        if (data.subscriptionStatus === "active" && data.planKey) {
+        if (
+          data.subscriptionStatus === "active" &&
+          data.planKey &&
+          data.planKey.endsWith("_annual")
+        ) {
           setPlanKey(data.planKey);
           setActiveTab(tabFromKey(data.planKey));
-          if (data.planKey.endsWith("_annual")) setTermYears(1);
+          setTermYears(1);
         } else {
-          setActiveTab(tabFromKey("digital_monthly"));
+          setActiveTab(tabFromKey("digital_annual"));
         }
       })
       .catch(() => {});
@@ -150,51 +148,15 @@ export default function Subscribe() {
       modal: {
         ondismiss: () => {
           setErr("");
-          setPlanKey(me?.planKey || "digital_monthly");
-          setActiveTab(tabFromKey(me?.planKey || "digital_monthly"));
+          setPlanKey(me?.planKey || "digital_annual");
+          setActiveTab(tabFromKey(me?.planKey || "digital_annual"));
         },
       },
     });
     rzp.on("payment.failed", (resp) => {
       setErr(resp?.error?.description || "Payment failed");
-      setPlanKey(me?.planKey || "digital_monthly");
-      setActiveTab(tabFromKey(me?.planKey || "digital_monthly"));
-    });
-    rzp.open();
-  };
-
-  const startSubscription = async () => {
-    const payload = { planKey };
-    if (needsAddress) payload.address = address;
-    const { data } = await API.post("/pay/create-subscription", payload);
-    const rzp = new window.Razorpay({
-      key: data.key,
-      subscription_id: data.subscriptionId,
-      name: "India IPO Magazine",
-      description: "Magazine Subscription",
-      handler: async function (resp) {
-        try {
-          await API.post("/pay/activate", {
-            payment_id: resp.razorpay_payment_id,
-            subscription_id: resp.razorpay_subscription_id,
-            signature: resp.razorpay_signature,
-          });
-        } catch {}
-        nav("/library");
-      },
-      theme: { color: "#111827" },
-      modal: {
-        ondismiss: () => {
-          setErr("");
-          setPlanKey(me?.planKey || "digital_monthly");
-          setActiveTab(tabFromKey(me?.planKey || "digital_monthly"));
-        },
-      },
-    });
-    rzp.on("payment.failed", (resp) => {
-      setErr(resp?.error?.description || "Payment failed");
-      setPlanKey(me?.planKey || "digital_monthly");
-      setActiveTab(tabFromKey(me?.planKey || "digital_monthly"));
+      setPlanKey(me?.planKey || "digital_annual");
+      setActiveTab(tabFromKey(me?.planKey || "digital_annual"));
     });
     rzp.open();
   };
@@ -206,11 +168,7 @@ export default function Subscribe() {
     if (!validateAddress()) return;
     setLoading(true);
     try {
-      if (isAnnual) {
-        await startOneTime();
-      } else {
-        await startSubscription();
-      }
+      await startOneTime();
     } catch (e) {
       setErr(e?.response?.data?.error || "Failed to start payment");
     } finally {
@@ -236,7 +194,7 @@ export default function Subscribe() {
     const isHindi = tab === "hindi";
     const validKeys = (isHindi ? HINDI_PLANS : ENGLISH_PLANS).map((p) => p.key);
     if (!validKeys.includes(planKey)) {
-      const fallback = isHindi ? "hindi_digital_monthly" : "digital_monthly";
+      const fallback = isHindi ? "hindi_digital_annual" : "digital_annual";
       setPlanKey(fallback);
       setTermYears(1);
     }
@@ -255,7 +213,7 @@ export default function Subscribe() {
         </div>
       }
     >
-      <div className="w-full flex flex-col my-10 items-center">
+      <div className="flex flex-col mx-auto justify-center items-center">
         {hasActive && (
           <div className="mb-4 rounded-xl border border-green-200 bg-green-50 p-3 text-sm">
             <span className="font-medium">Active plan:</span>{" "}
@@ -263,7 +221,7 @@ export default function Subscribe() {
           </div>
         )}
 
-        <div className="mb-4 flex w-full max-w-2xl rounded-full border border-slate-200 bg-white p-1">
+        <div className="mb-4  flex w-full max-w-2xl rounded-full border border-slate-200 bg-white p-1">
           <button
             type="button"
             onClick={() => onSwitchTab("english")}
@@ -288,126 +246,111 @@ export default function Subscribe() {
           </button>
         </div>
 
-        <div className="grid gap-3 max-w-2xl">
-          <div className="grid md:grid-cols-2 gap-3">
-            {shownPlans.map((p) => {
-              const isCurrent = hasActive && me?.planKey === p.key;
-              const isThisAnnual = p.key.endsWith("_annual");
-              const thisType = planTypeFromKey(p.key);
-              const selected = planKey === p.key;
+        <div className="grid w-full max-w-3xl grid-cols-1 gap-4 md:grid-cols-2">
+          {shownPlans.map((p) => {
+            const selected = planKey === p.key;
+            const isThisAnnual = p.key.endsWith("_annual");
+            const thisType = planTypeFromKey(p.key);
+            const cardTerm = isThisAnnual ? termYears : 1;
+            const cardCompareAt = isThisAnnual
+              ? 12 * MONTHLY_PRICE[thisType] * cardTerm
+              : MONTHLY_PRICE[thisType];
+            const cardDiscount = isThisAnnual ? DISCOUNT_PCT[cardTerm] || 0 : 0;
+            const cardActual = isThisAnnual
+              ? Math.round(
+                  12 *
+                    MONTHLY_PRICE[thisType] *
+                    cardTerm *
+                    (1 - cardDiscount / 100)
+                )
+              : MONTHLY_PRICE[thisType];
 
-              const cardTerm = selected && isThisAnnual ? termYears : 1;
-              const cardCompareAt = isThisAnnual
-                ? 12 * MONTHLY_PRICE[thisType] * cardTerm
-                : null;
-              const cardDiscount = isThisAnnual
-                ? DISCOUNT_PCT[cardTerm] || 0
-                : 0;
-              const cardActual = isThisAnnual
-                ? Math.round(cardCompareAt * (1 - cardDiscount / 100))
-                : null;
-
-              return (
-                <label
-                  key={p.key}
-                  className={`rounded-2xl border p-4 cursor-pointer ${
-                    selected ? "ring-2 ring-slate-300" : ""
-                  } ${
-                    isCurrent
-                      ? "bg-green-50 border-green-200"
-                      : "bg-slate-50 border-slate-200"
-                  }`}
-                >
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <input
-                        type="radio"
-                        name="plan"
-                        value={p.key}
-                        className="mr-2 accent-slate-900"
-                        checked={selected}
-                        onChange={() => {
-                          setPlanKey(p.key);
-                          if (p.key.endsWith("_annual")) setTermYears(1);
-                          const nextTab = tabFromKey(p.key);
-                          if (nextTab !== activeTab) setActiveTab(nextTab);
-                        }}
-                      />
-                      <span className="font-semibold ml-1">{p.label}</span>
-
-                      {!isThisAnnual ? (
-                        <div className="muted mt-1">
-                          ₹{fmt.format(MONTHLY_PRICE[thisType])} / mo
-                        </div>
-                      ) : (
-                        <div className="mt-1 text-sm">
-                          <span className="line-through mr-2 text-slate-500">
-                            ₹{fmt.format(cardCompareAt)}
-                          </span>
-                          <span className="font-semibold">
-                            ₹{fmt.format(cardActual)} /{" "}
-                            {cardTerm > 1 ? `${cardTerm} yrs` : "yr"}
-                          </span>{" "}
-                          <span className="text-green-700">
-                            ({cardDiscount}% off)
-                          </span>
-                        </div>
-                      )}
-                    </div>
-
-                    {isCurrent && (
-                      <span className="ml-1 text-xs rounded-full px-2 py-2 bg-green-600 text-white text-center">
-                        Current plan
-                      </span>
+            return (
+              <label
+                key={p.key}
+                className={`cursor-pointer rounded-2xl border p-4 transition ${
+                  selected
+                    ? "border-slate-900 shadow-lg"
+                    : "border-slate-200 hover:shadow"
+                }`}
+              >
+                <div className="flex items-start gap-3">
+                  <input
+                    type="radio"
+                    name="plan"
+                    className="mt-1"
+                    checked={selected}
+                    onChange={() => {
+                      setPlanKey(p.key);
+                      if (p.key.endsWith("_annual")) setTermYears(1);
+                      const nextTab = tabFromKey(p.key);
+                      if (nextTab !== activeTab) setActiveTab(nextTab);
+                    }}
+                  />
+                  <div className="flex-1">
+                    <div className="font-semibold">{p.label}</div>
+                    {!isThisAnnual ? (
+                      <div className="muted mt-1">
+                        ₹{fmt.format(MONTHLY_PRICE[thisType])} / mo
+                      </div>
+                    ) : (
+                      <div className="mt-1 text-sm">
+                        <span className="line-through mr-2 text-slate-500">
+                          ₹{fmt.format(cardCompareAt)}
+                        </span>
+                        <span className="font-semibold">
+                          ₹{fmt.format(cardActual)} /{" "}
+                          {cardTerm > 1 ? `${cardTerm} yrs` : "yr"}
+                        </span>{" "}
+                        <span className="text-green-700">
+                          ({cardDiscount}% off)
+                        </span>
+                      </div>
                     )}
                   </div>
+                </div>
+              </label>
+            );
+          })}
+        </div>
 
-                  {selected && isThisAnnual && (
-                    <div className="mt-3 flex gap-2">
-                      {[1, 2, 3].map((y) => (
-                        <button
-                          key={y}
-                          type="button"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            setTermYears(y);
-                          }}
-                          className={`px-3 py-1 rounded-full border text-sm ${
-                            termYears === y
-                              ? "border-slate-900 bg-slate-900 text-white"
-                              : "border-slate-300 bg-white hover:bg-slate-50"
-                          }`}
-                          title={`${y} year${y > 1 ? "s" : ""} — ${
-                            DISCOUNT_PCT[y]
-                          }% off`}
-                        >
-                          {y} yr{y > 1 ? "s" : ""} · {DISCOUNT_PCT[y]}% off
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </label>
-              );
-            })}
-          </div>
-
-          {needsAddress && (
-            <div className="rounded-2xl border border-slate-200 p-4 bg-white">
-              <div className="font-semibold mb-2">
-                Delivery address (required for Print plans)
-              </div>
-              <div className="grid sm:grid-cols-2 gap-3">
-                {addrField("name", "Full name")}
-                {addrField("phone", "Phone")}
-                {addrField("line1", "Address line 1")}
-                {addrField("line2", "Address line 2 (optional)")}
-                {addrField("city", "City")}
-                {addrField("state", "State")}
-                {addrField("pincode", "Pincode")}
-              </div>
+        {isAnnual && (
+          <div className="mt-4 flex items-center gap-2">
+            <span className="text-sm">Term:</span>
+            <div className="flex gap-2">
+              {[1, 2, 3].map((y) => (
+                <button
+                  key={y}
+                  onClick={() => setTermYears(y)}
+                  className={`rounded-full border px-3 py-1 text-sm ${
+                    termYears === y
+                      ? "border-slate-900 bg-slate-900 text-white"
+                      : "border-slate-300 hover:bg-slate-50"
+                  }`}
+                >
+                  {y} {y > 1 ? "years" : "year"}
+                </button>
+              ))}
             </div>
-          )}
+          </div>
+        )}
 
+        {needsAddress && (
+          <div className="mt-6 w-full max-w-3xl rounded-xl border p-4">
+            <div className="mb-2 font-semibold">Shipping address</div>
+            <div className="grid grid-cols-1 gap-2 md:grid-cols-2">
+              {addrField("name", "Full name")}
+              {addrField("phone", "Phone")}
+              {addrField("line1", "Address line 1")}
+              {addrField("line2", "Address line 2 (optional)")}
+              {addrField("city", "City")}
+              {addrField("state", "State")}
+              {addrField("pincode", "Pincode")}
+            </div>
+          </div>
+        )}
+
+        <div className="mt-6">
           {err && <div className="text-red-600 text-sm">{err}</div>}
           <div className="flex gap-3">
             <button
@@ -416,21 +359,10 @@ export default function Subscribe() {
               disabled={
                 loading || !rzpReady || (isCurrentSelected && termYears === 1)
               }
-              title={
-                isCurrentSelected && termYears === 1
-                  ? "This is your current plan"
-                  : undefined
-              }
             >
-              {isAnnual
-                ? loading
-                  ? "Starting…"
-                  : `Pay One-Time (${termYears} yr${
-                      termYears > 1 ? "s" : ""
-                    }) →`
-                : loading
+              {loading
                 ? "Starting…"
-                : "Subscribe →"}
+                : `Pay-One-Time (${termYears} yr${termYears > 1 ? "s" : ""}) →`}
             </button>
 
             {hasActive && (

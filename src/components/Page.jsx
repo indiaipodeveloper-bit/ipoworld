@@ -17,13 +17,14 @@ export default function Page({ title, children }) {
     try {
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      nav("/");
+      window.location.reload();
     } finally {
       setOpen(false);
       nav("/");
+      window.location.reload();
     }
   };
-
- 
 
   useEffect(() => {
     if (!open) return;
