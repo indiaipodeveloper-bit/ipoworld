@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from "react";
 import * as pdfjsLib from "pdfjs-dist";
-import pdfjsWorker from "pdfjs-dist/build/pdf.worker.mjs?worker";
 import FlipBookWrapper from "./Flipper";
 import Lottie from "react-lottie";
 import animationData from "../../assets/animation.json";
@@ -16,12 +15,13 @@ const animationDefaultOptions = {
   autoplay: true,
   animationData,
 };
-pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
-  "pdfjs-dist/build/pdf.worker.mjs",
-  import.meta.url
-).toString();
+pdfjsLib.GlobalWorkerOptions.workerSrc =
+  "https://cdn.jsdelivr.net/npm/pdfjs-dist@5.4.296/build/pdf.worker.min.mjs";
+// pdfjsLib.GlobalWorkerOptions.workerSrc = new URL(
+//   "pdfjs-dist/build/pdf.worker.mjs",
+//   import.meta.url
+// ).toString();
 
-// Configuration
 const CACHE_SIZE = 15;
 const PRELOAD_AHEAD = 3;
 const RENDER_SCALE = 1.5;
