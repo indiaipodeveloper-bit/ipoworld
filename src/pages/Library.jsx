@@ -103,8 +103,7 @@ export default function Library() {
         </div>
 
         <div
-          className={`flex flex-wrap
-             justify-evenly transition-all duration-1000 gap-y-10
+          className={`grid grid-cols-1 grid-rows-1 sm:grid-cols-2 sm:grid-rows-2 lg:grid-rows-3 lg:grid-cols-3  2xl:grid-cols-4 2xl:grid-rows-4 gap-10 transition-all duration-1000 gap-y-10
     ${isReader ? "hidden" : ""}
   `}
         >
@@ -117,7 +116,7 @@ export default function Library() {
             filteredMagazind.map((magazine) => (
               <div
                 key={magazine._id}
-                className="bg-white rounded-xl w-full  lg:w-[30%] max-h-[600px] overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
+                className="bg-white rounded-xl w-full  overflow-hidden shadow-md hover:shadow-xl hover:-translate-y-2 transition-all"
               >
                 <div
                   className={` bg-gradient-to-br ${magazine.gradient}  overflow-hidden h-[400px] items-center justify-center text-white text-2xl font-bold relative`}
