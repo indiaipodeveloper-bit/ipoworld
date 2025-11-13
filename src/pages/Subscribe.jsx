@@ -302,9 +302,6 @@ export default function Subscribe() {
                           ₹{fmt.format(cardActual)} /{" "}
                           {cardTerm > 1 ? `${cardTerm} yrs` : "yr"}
                         </span>{" "}
-                        <span className="text-green-700">
-                          ({cardDiscount}% off)
-                        </span>
                       </div>
                     )}
                   </div>
@@ -315,21 +312,28 @@ export default function Subscribe() {
         </div>
 
         {isAnnual && (
-          <div className="mt-4 flex items-center gap-2">
-            <span className="text-sm">Term:</span>
-            <div className="flex gap-2">
-              {[1, 2, 3].map((y) => (
-                <button
+          <div className="mt-4 flex items-center flex-wrap justify-center gap-2">
+            <span className="text-lg">Tenure:</span>
+            <div className="flex gap-5 justify-center flex-wrap">
+              {[1, 2, 3].map((y, i) => (
+                <div
                   key={y}
-                  onClick={() => setTermYears(y)}
-                  className={`rounded-full border px-3 py-1 text-sm ${
-                    termYears === y
-                      ? "border-slate-900 bg-slate-900 text-white"
-                      : "border-slate-300 hover:bg-slate-50"
-                  }`}
+                  className="flex flex-col justify-center items-center gap-2.5"
                 >
-                  {y} {y > 1 ? "years" : "year"}
-                </button>
+                  <button
+                    onClick={() => setTermYears(y)}
+                    className={`rounded-full border px-3 py-1 text-lg font-semibold ${
+                      termYears === y
+                        ? "border-slate-900 bg-slate-900 text-white"
+                        : "border-slate-300 hover:bg-slate-50"
+                    }`}
+                  >
+                    {y} {y > 1 ? "years" : "year"}
+                  </button>
+                  <span className="text-green-700">{`(${
+                    DISCOUNT_PCT[i + 1]
+                  }% off)`}</span>
+                </div>
               ))}
             </div>
           </div>

@@ -33,7 +33,7 @@ export default function Library() {
 
     API.get("/pdfs")
       .then(({ data }) => {
-        setItems(data);
+        setItems(data.sort((a, b) => new Date(b.month) - new Date(a.month)));
       })
       .catch((e) => {
         const msg = e?.response?.data?.error || "Failed to load library";
