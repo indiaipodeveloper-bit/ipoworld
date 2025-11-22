@@ -9,7 +9,7 @@ import {
 export default function Footer() {
   return (
     <footer className="bg-[#f8f8f8] text-gray-700 border-t mt-10">
-      <div className="max-w-6xl mx-auto px-4 py-10 grid md:grid-cols-2 gap-8 text-sm">
+      <div className="max-w-6xl mx-auto px-3 py-10 grid md:grid-cols-2 gap-8 text-sm">
         <div>
           <img
             src="https://www.indiaipo.in/assets/images/indiaipo_logo_r.png"

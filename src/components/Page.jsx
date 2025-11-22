@@ -4,6 +4,17 @@ import { HiBookOpen, HiMenu, HiPlus, HiX } from "react-icons/hi";
 import { IoLogOutOutline } from "react-icons/io5";
 import indiaIPOLogo from "../assets/indiaipo.jpg";
 
+const PLAN_LABEL = {
+  digital_monthly: "Digital only (Monthly)",
+  digital_annual: "Digital only (Annual)",
+  print_only_monthly: "Print only (Monthly)",
+  print_only_annual: "Print only (Annual)",
+  print_monthly: "Digital + Print (Monthly)",
+  print_annual: "Digital + Print (Annual)",
+  hindi_digital_monthly: "Hindi Digital only (Monthly)",
+  hindi_digital_annual: "Hindi Digital only (Annual)",
+};
+
 export default function Page({ title, children }) {
   const nav = useNavigate();
   const hasUser = !!localStorage.getItem("token");
@@ -13,9 +24,22 @@ export default function Page({ title, children }) {
   const [sidebarState, setsidebarState] = useState(
     localStorage.getItem("sidebarState")
   );
+  const currentPlan = (() => {
+    try {
+      const raw = localStorage.getItem("user");
+      if (!raw) return null;
+      const parsed = JSON.parse(raw);
+      const planKey = parsed?.planKey || parsed?.subscriptionPlan || null;
+      if (!planKey) return null;
+      return PLAN_LABEL[planKey] || planKey;
+    } catch {
+      return null;
+    }
+  })();
   const logout = () => {
     try {
       localStorage.removeItem("token");
+      localStorage.removeItem("activeTab");
       localStorage.removeItem("user");
       nav("/");
       window.location.reload();
@@ -127,12 +151,21 @@ export default function Page({ title, children }) {
             </nav>
 
             <div className="p-6  border-t border-gray-200">
-              <div className="bg-green-50 rounded-lg p-4 mb-4">
-                <h4 className="text-xs uppercase tracking-wide text-blue-900 mb-1">
-                  Current Plan
-                </h4>
-                <p className="text-sm text-gray-700">Digital only (Monthly)</p>
-              </div>
+              {currentPlan ? (
+                <div className="bg-green-50 rounded-lg p-4 mb-4">
+                  <h4 className="text-xs uppercase tracking-wide text-blue-900 mb-1">
+                    Current Plan
+                  </h4>
+                  <p className="text-sm text-gray-700">{currentPlan}</p>
+                </div>
+              ) : (
+                <div className="bg-gray-50 rounded-lg p-4 mb-4">
+                  <h4 className="text-xs uppercase tracking-wide text-gray-700 mb-1">
+                    Current Plan
+                  </h4>
+                  <p className="text-sm text-gray-500">No active plan</p>
+                </div>
+              )}
               <button
                 onClick={logout}
                 className="w-full flex items-center cursor-pointer justify-center gap-2 px-4 py-3 bg-[#3661fd] text-white rounded-lg font-medium hover:bg-blue-600 hover:-translate-y-0.5 hover:shadow-lg transition-all"

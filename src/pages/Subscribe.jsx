@@ -5,8 +5,8 @@ import { API } from "../api.js";
 import indiaIPOLogo from "../assets/ipologo2.png";
 
 const MONTHLY_PRICE = {
-  digital: 149,
-  hindi_digital: 149,
+  digital: 199,
+  hindi_digital: 199,
   print_only: 275,
   print: 349,
 };
@@ -14,10 +14,17 @@ const MONTHLY_PRICE = {
 const DISCOUNT_PCT = { 1: 15, 2: 22, 3: 35 };
 
 const plans = [
+  { key: "digital_monthly", label: "Digital only (Monthly)" },
   { key: "digital_annual", label: "Digital only (Annual)" },
-  { key: "hindi_digital_annual", label: "Hindi Digital only (Annual)" },
+
+  { key: "print_only_monthly", label: "Print only (Monthly)" },
   { key: "print_only_annual", label: "Print only (Annual)" },
+
+  { key: "print_monthly", label: "Digital + Print (Monthly)" },
   { key: "print_annual", label: "Digital + Print (Annual)" },
+
+  { key: "hindi_digital_monthly", label: "Hindi Digital only (Monthly)" },
+  { key: "hindi_digital_annual", label: "Hindi Digital only (Annual)" },
 ];
 
 const PLAN_LABEL = Object.fromEntries(plans.map((p) => [p.key, p.label]));
@@ -29,6 +36,7 @@ function planTypeFromKey(k) {
   if (k.startsWith("print_")) return "print";
   return "digital";
 }
+
 function tabFromKey(k) {
   return k.startsWith("hindi_") ? "hindi" : "english";
 }
@@ -54,13 +62,16 @@ export default function Subscribe() {
   });
   const [me, setMe] = useState(null);
   const [activeTab, setActiveTab] = useState("english");
+  const isActiveStatus = (status) =>
+    typeof status === "string" && status.toLowerCase() === "active";
 
   const isAnnual = planKey.endsWith("_annual");
   const needsAddress = planKey.startsWith("print_");
-  const hasActive = me?.subscriptionStatus === "active";
+  const hasActive = isActiveStatus(me?.subscriptionStatus);
   const isCurrentSelected = hasActive && me?.planKey === planKey;
 
   const adsConvFiredRef = useRef(false);
+
   useEffect(() => {
     if (adsConvFiredRef.current) return;
     adsConvFiredRef.current = true;
@@ -94,7 +105,7 @@ export default function Subscribe() {
       .then(({ data }) => {
         setMe(data);
         if (
-          data.subscriptionStatus === "active" &&
+          isActiveStatus(data.subscriptionStatus) &&
           data.planKey &&
           data.planKey.endsWith("_annual")
         ) {
@@ -120,6 +131,7 @@ export default function Subscribe() {
   };
 
   const type = planTypeFromKey(planKey);
+
   const compareAt = useMemo(() => {
     if (!isAnnual) return null;
     return 12 * MONTHLY_PRICE[type] * termYears;
@@ -161,14 +173,46 @@ export default function Subscribe() {
     rzp.open();
   };
 
+  const startSubscription = async () => {
+    const payload = { planKey };
+    if (needsAddress) payload.address = address;
+    const { data } = await API.post("/pay/create-subscription", payload);
+    if (data.shortUrl) {
+      window.location.href = data.shortUrl;
+      return;
+    }
+    const rzp = new window.Razorpay({
+      key: data.key,
+      subscription_id: data.subscriptionId,
+      name: "India IPO Magazine",
+      description: PLAN_LABEL[planKey] || "Subscription",
+      handler: function () {
+        nav("/library");
+      },
+      theme: { color: "#111827" },
+      modal: {
+        ondismiss: () => {
+          setErr("");
+        },
+      },
+    });
+    rzp.open();
+  };
+
   const pay = async () => {
     setErr("");
-    if (!rzpReady)
-      return setErr("Payment is initializing. Please try again in a second.");
+    if (!rzpReady) {
+      setErr("Payment is initializing. Please try again in a second.");
+      return;
+    }
     if (!validateAddress()) return;
     setLoading(true);
     try {
-      await startOneTime();
+      if (isAnnual) {
+        await startOneTime();
+      } else {
+        await startSubscription();
+      }
     } catch (e) {
       setErr(e?.response?.data?.error || "Failed to start payment");
     } finally {
@@ -213,7 +257,7 @@ export default function Subscribe() {
         </div>
       }
     >
-      <div className="flex flex-col mx-auto justify-center items-center">
+      <div className="flex flex-col mx-auto justify-center items-center pb-16">
         {hasActive && (
           <div className="mb-4 rounded-xl border border-green-200 bg-green-50 p-3 text-sm">
             <span className="font-medium">Active plan:</span>{" "}
@@ -251,25 +295,31 @@ export default function Subscribe() {
             const selected = planKey === p.key;
             const isThisAnnual = p.key.endsWith("_annual");
             const thisType = planTypeFromKey(p.key);
+            const isUserCurrentPlan = p.key === me?.planKey;
+
             const cardTerm = isThisAnnual ? termYears : 1;
-            const cardCompareAt = isThisAnnual
-              ? 12 * MONTHLY_PRICE[thisType] * cardTerm
-              : MONTHLY_PRICE[thisType];
-            const cardDiscount = isThisAnnual ? DISCOUNT_PCT[cardTerm] || 0 : 0;
-            const cardActual = isThisAnnual
-              ? Math.round(
-                  12 *
-                    MONTHLY_PRICE[thisType] *
-                    cardTerm *
-                    (1 - cardDiscount / 100)
-                )
-              : MONTHLY_PRICE[thisType];
+
+            let cardCompareAt = null;
+            let cardActual = null;
+            let cardDiscount = "";
+
+            if (isThisAnnual) {
+              const base = 12 * MONTHLY_PRICE[thisType] * cardTerm;
+              const disc = DISCOUNT_PCT[cardTerm] || 0;
+              cardCompareAt = base;
+              cardActual = Math.round(base * (1 - disc / 100));
+              cardDiscount = disc ? `(${disc}% off)` : "";
+            } else {
+              cardActual = MONTHLY_PRICE[thisType];
+            }
 
             return (
               <label
                 key={p.key}
-                className={`cursor-pointer rounded-2xl border p-4 transition ${
-                  selected
+                className={`cursor-pointer rounded-2xl p-4 transition border ${
+                  isUserCurrentPlan
+                    ? "border-green-600 bg-green-50 shadow"
+                    : selected
                     ? "border-slate-900 shadow-lg"
                     : "border-slate-200 hover:shadow"
                 }`}
@@ -289,19 +339,31 @@ export default function Subscribe() {
                   />
                   <div className="flex-1">
                     <div className="font-semibold">{p.label}</div>
-                    {!isThisAnnual ? (
-                      <div className="muted mt-1">
-                        ₹{fmt.format(MONTHLY_PRICE[thisType])} / mo
+                    {isUserCurrentPlan && (
+                      <div className="text-green-700 text-xs font-medium mt-1">
+                        (Your current plan)
+                      </div>
+                    )}
+                    {isThisAnnual ? (
+                      <div className="mt-1 text-sm">
+                        <span className="line-through mr-2 text-slate-500">
+                          ₹{fmt.format(cardCompareAt || 0)}
+                        </span>
+                        <span className="font-semibold">
+                          ₹{fmt.format(cardActual || 0)} /{" "}
+                          {cardTerm > 1 ? `${cardTerm} yrs` : "yr"}
+                        </span>{" "}
+                        {cardDiscount && (
+                          <span className="text-xs text-green-700">
+                            {cardDiscount}
+                          </span>
+                        )}
                       </div>
                     ) : (
                       <div className="mt-1 text-sm">
-                        <span className="line-through mr-2 text-slate-500">
-                          ₹{fmt.format(cardCompareAt)}
-                        </span>
                         <span className="font-semibold">
-                          ₹{fmt.format(cardActual)} /{" "}
-                          {cardTerm > 1 ? `${cardTerm} yrs` : "yr"}
-                        </span>{" "}
+                          ₹{fmt.format(cardActual || 0)} / month
+                        </span>
                       </div>
                     )}
                   </div>
@@ -356,17 +418,21 @@ export default function Subscribe() {
 
         <div className="mt-6">
           {err && <div className="text-red-600 text-sm">{err}</div>}
-          <div className="flex gap-3">
+          <div className="flex gap-3 flex-wrap">
             <button
               className="btn"
               onClick={pay}
               disabled={
-                loading || !rzpReady || (isCurrentSelected && termYears === 1)
+                loading ||
+                !rzpReady ||
+                (isAnnual && isCurrentSelected && termYears === 1)
               }
             >
               {loading
                 ? "Starting…"
-                : `Pay-One-Time (${termYears} yr${termYears > 1 ? "s" : ""}) →`}
+                : isAnnual
+                ? `Pay-One-Time (${termYears} yr${termYears > 1 ? "s" : ""}) →`
+                : "Pay Now →"}
             </button>
 
             {hasActive && (
